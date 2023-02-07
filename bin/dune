@@ -1,0 +1,11 @@
+(env
+ (_
+  (flags :standard -w -27-26-32-33 -g)))
+(executable
+ (public_name subgroups)
+ (name main)
+ (libraries subgroups)
+ (modes byte exe))
+
+
+

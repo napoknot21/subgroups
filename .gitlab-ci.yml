@@ -1,0 +1,41 @@
+image: ocaml/opam:debian
+
+stages:
+  - build
+  - test
+  - cleanup
+
+.install-utils: &install-utils
+  - opam switch
+  - opam install dune
+  - eval $(opam env)
+
+build:
+  stage: build
+  before_script:
+    *install-utils
+  script:
+    - make
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    policy: push
+    paths:
+      - _build
+
+test:
+  stage: test
+  before_script:
+    *install-utils
+  script:
+    - make test
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    policy: pull-push
+    paths:
+      - _build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: always
+    - when: never

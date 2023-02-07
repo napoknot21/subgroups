@@ -21,17 +21,37 @@ def pollard_rho(n):
             y, k = x, 2*k
     return d
 
+def power(x, y, p):
+
+    # Initialize result
+    res = 1
+
+    while (y > 0):
+
+        # If y is odd, multiply x with result
+        if ((y & 1) != 0):
+            res = res * x
+
+        # y must be even now
+        y = y >> 1  # y = y/2
+        x = x * x  # Change x to x^2
+
+    return res % p
+
 
 def compute_ut(n):
     b = bin(n - 1)
     i = len(b) - 1
     t = 0
     while b[i] == '0':
+        print(b[i])
         t = t+1
         i = i - 1
     t = 1 if t == 0 else t
-    u = b[:len(b) - t - 1] + '1'
-    return int(u, 2), t
+    u = b[:len(b) - t - 1] +'1'
+    u = int(u, 2)
+    print(u)
+    return u, t
 
 
 def mira_witness(a, n):
@@ -43,6 +63,7 @@ def mira_witness(a, n):
     x = pow(a, u, n)
     for _ in range(t):
         y = pow(x, 2, n)
+        print(y)
         if y == 1:
             return False
         x = y
@@ -77,4 +98,4 @@ def fact(n):
 if __name__ == '__main__':
     n = int(sys.argv[1])
     print("Calcul pour n = ", n)
-    print(fact(int(n)))
+    print(fact(n))
