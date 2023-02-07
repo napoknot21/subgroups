@@ -9,72 +9,63 @@ let pollard_rho f n =
   let rec loop x y k i d =
     if d <> 1 then d
     else
-      let x = f x mod n and d = gcd (abs (y - x)) n in
+      let x = f x mod n in
+      let d = gcd (abs (y - x)) n in
       if i = k then loop x x (2 * k) (i + 1) d else loop x y k (i + 1) d
   in
-  let x = 2 + Random.int n in
+  let x = 2 + Random.int (n - 2) in
   loop x x 2 1 1
 
-let nth_bit x i = x land (1 lsl i) <> 0
-
-let bin_to_int b =
-  let rec loop res = function
-    | [] -> res
-    | b :: l ->
-        if res = 0 then loop 1 l
-        else if b then loop (res * 2 + 1) l else loop (res * 2) l
-  in
-  loop 0 b
-
-let int_to_bin n =
-  let rec loop l k i =
-    if k == 0 then l else loop (nth_bit n i :: l) (k / 2) (i + 1)
-  in
-  List.rev(loop [] n 0)
-
-(*let bin_to_int b = bin_to_int_at b 0*)
-
 let compute_ut n =
-  let rec loop t = function
-    | [] -> (t, [])
-    | b :: l -> if b then (t, l) else loop (t + 1) l
+  let rec loop n t =
+    if (n asr 1) land 1 = 1 then (n, t) else loop (n asr 1) (t + 1)
   in
-  let b = int_to_bin (n-1) in
-  let t, l = loop 0 b in
-  match l with [] -> (0, t) | l -> (bin_to_int (List.rev(true :: l)), t)
+  let u, t = loop (n - 1) 1 in
+  ((u asr 1) lor 1, t)
 
 let binpow a b n =
   let rec loop a res = function
-    | 0 -> 0
+    | 0 -> res
     | b ->
-        let res = if b land 1 = 1 then (res * a) mod n else res in
-        loop ((a * a) mod n) res (b asr 1)
+        let res = if b land 1 = 1 then res * a mod n else res in
+        loop (a * a mod n) res (b asr 1)
   in
   loop (a mod n) 1 b
 
 let mira_witness a n =
-  let rec loop x t =
-    if t = 0 then x <> 1
-    else
-      let y = (x * x) mod n in
-      if y = 1 then false else loop y (t - 1)
+  Printf.printf "a = %d n = %d \n" a n;
+  let rec loop x = function
+    | 0 -> x <> 1
+    | t ->
+        let y = binpow x 2 n in
+        if y = 1 then false else loop y (t - 1)
   in
   if n < 3 then false
   else if n mod 2 = 0 then true
   else
     let u, t = compute_ut n in
-    Printf.printf "%d\n" (binpow a u n);
+    Printf.printf "%d,%d \n" u t;
     loop (binpow a u n) t
 
 let is_prime n =
-  let rec loop t =
-    if t = 0 then true
-    else if mira_witness (Random.int n + 1) n then false
-    else loop (t - 1)
+  let rec loop = function
+    | 0 -> true
+    | t ->
+        if mira_witness (1 + Random.int (n - 1)) n then false else loop (t - 1)
   in
   loop threshold
 
+let fold_prime l =
+    let rec loop res l = match res,l with
+    | [], [] -> []
+    | _::_, [] -> res
+    | [], x::l -> loop [x] l
+    | a::r as r', b::l -> if a = b then loop ((a*a)::r) l else b::r'
+  in List.sort compare (loop [] l)
+
 let rec factorise n =
+  Printf.printf "Pollard Rho for %d \n" n;
+  flush stdout;
   let rec loop l = function
     | 0 -> []
     | 1 -> l
@@ -82,7 +73,6 @@ let rec factorise n =
         if n mod 2 = 0 then loop (2 :: l) (n / 2)
         else
           let d = pollard_rho pol n in
-          Printf.printf "%d; " d;
           loop (List.rev_append (factorise d) l) (n / d)
   in
-  if is_prime n then [ n ] else loop [] n
+  if is_prime n then [ n ] else List.sort compare (loop [] n)

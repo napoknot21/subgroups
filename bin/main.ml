@@ -9,5 +9,5 @@ let binpow a b n =
   in
   (loop a 1 b)
 
-let () = (fun x -> Printf.printf "%b \n" x) (is_prime 2764553);
+let () = List.iter (fun x -> Printf.printf "%d \n" x) (factorise 50)
 

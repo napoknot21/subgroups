@@ -14,3 +14,11 @@ val is_prime : int -> bool
 val gcd : int -> int -> int
 
 val binpow : int -> int -> int -> int
+
+val pollard_rho: (int -> int) -> int -> int
+
+val mira_witness: int -> int ->bool
+
+val compute_ut : int -> int * int
+
+val fold_prime : int list -> int list

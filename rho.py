@@ -13,7 +13,7 @@ def pgcd(a, b):
 def pollard_rho(n):
     x = random.randint(2, n-1)
     y, k, i, d = x, 2, 1, 1
-    while d == 1:
+    while d == 1 :
         i = i + 1
         x = (x * x - 1) % n
         d = pgcd(abs(y - x), n)
@@ -63,7 +63,6 @@ def mira_witness(a, n):
     x = pow(a, u, n)
     for _ in range(t):
         y = pow(x, 2, n)
-        print(y)
         if y == 1:
             return False
         x = y
@@ -71,7 +70,7 @@ def mira_witness(a, n):
 
 
 def is_prime(n, s=50):
-    for i in range(1, s):
+    for _ in range(1, s):
         a = random.randint(1, n-1)
         if mira_witness(a, n):
             return False
@@ -98,4 +97,4 @@ def fact(n):
 if __name__ == '__main__':
     n = int(sys.argv[1])
     print("Calcul pour n = ", n)
-    print(fact(n))
+    print(pollard_rho(n))
