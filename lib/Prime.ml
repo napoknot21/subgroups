@@ -56,12 +56,14 @@ let is_prime n =
   loop threshold
 
 let fold_prime l =
-    let rec loop res l = match res,l with
+  let rec loop res l =
+    match (res, l) with
     | [], [] -> []
-    | _::_, [] -> res
-    | [], x::l -> loop [x] l
-    | a::r as r', b::l -> if a = b then loop ((a*a)::r) l else b::r'
-  in List.sort compare (loop [] l)
+    | _ :: _, [] -> res
+    | [], x :: l -> loop [ x ] l
+    | (a :: r as r'), b :: l -> if a = b then loop ((a * a) :: r) l else b :: r'
+  in
+  List.sort compare (loop [] l)
 
 let rec factorise n =
   Printf.printf "Pollard Rho for %d \n" n;

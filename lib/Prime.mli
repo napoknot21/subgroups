@@ -13,12 +13,5 @@ val is_prime : int -> bool
 (* Give the gcd between the two given arguments*)
 val gcd : int -> int -> int
 
+(*Give the modular exponentiation as (a**b) % c*)
 val binpow : int -> int -> int -> int
-
-val pollard_rho: (int -> int) -> int -> int
-
-val mira_witness: int -> int ->bool
-
-val compute_ut : int -> int * int
-
-val fold_prime : int list -> int list
