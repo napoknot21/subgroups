@@ -1,6 +1,7 @@
 (* Generate the prime factorization of an integer n with
    pollard Rho algortihm and check if a number is prime with
    	Miller-Rabin algorithm *)
+
 let threshold = 50
 let pol x = (x * x) - 1
 let rec gcd a b = if b = 0 then a else gcd b (a mod b)
@@ -33,7 +34,6 @@ let binpow a b n =
   loop (a mod n) 1 b
 
 let mira_witness a n =
-  Printf.printf "a = %d n = %d \n" a n;
   let rec loop x = function
     | 0 -> x <> 1
     | t ->
@@ -44,7 +44,6 @@ let mira_witness a n =
   else if n mod 2 = 0 then true
   else
     let u, t = compute_ut n in
-    Printf.printf "%d,%d \n" u t;
     loop (binpow a u n) t
 
 let is_prime n =
@@ -56,18 +55,17 @@ let is_prime n =
   loop threshold
 
 let fold_prime l =
-  let rec loop res l =
+  let rec loop res l last =
     match (res, l) with
     | [], [] -> []
     | _ :: _, [] -> res
-    | [], x :: l -> loop [ x ] l
-    | (a :: r as r'), b :: l -> if a = b then loop ((a * a) :: r) l else b :: r'
+    | [], x :: l -> loop [ x ] l x
+    | (a :: r as r'), b :: l ->
+        if last = b then loop ((a * b) :: r) l b else loop (b :: r') l b
   in
-  List.sort compare (loop [] l)
+  List.sort compare (loop [] l 0)
 
 let rec factorise n =
-  Printf.printf "Pollard Rho for %d \n" n;
-  flush stdout;
   let rec loop l = function
     | 0 -> []
     | 1 -> l

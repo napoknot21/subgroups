@@ -15,3 +15,5 @@ val gcd : int -> int -> int
 
 (*Give the modular exponentiation as (a**b) % c*)
 val binpow : int -> int -> int -> int
+
+val fold_prime: int list -> int list

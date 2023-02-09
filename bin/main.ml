@@ -9,5 +9,7 @@ let binpow a b n =
   in
   (loop a 1 b)
 
-let () = List.iter (fun x -> Printf.printf "%d \n" x) (factorise 50)
+let () = Printf.printf "\n[" ; 
+        List.iter (fun x -> Printf.printf "%d;" x) (fold_prime(factorise 100));
+        Printf.printf "]\n";
 

@@ -1,4 +1,4 @@
 (test
  (name subgroups)
  (libraries subgroups)
- (preprocess (pps ppx_inline_test)))
+)
