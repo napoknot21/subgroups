@@ -6,6 +6,19 @@ let threshold = 50
 let pol x = (x * x) - 1
 let rec gcd a b = if b = 0 then a else gcd b (a mod b)
 
+let extended_gcd a b =
+  let rec loop (r, u, v, r', u', v') =
+    if r' = 0 then (r, u, v)
+    else
+      let q = r / r' in
+      loop (r', u', v', r - (q * r'), u - (q * u'), v - (q * v'))
+  in
+  loop (a, 1, 0, b, 0, 1)
+
+let bezout a b =
+  let _, u, v = extended_gcd a b in
+  (u, v)
+
 let pollard_rho f n =
   let rec loop x y k i d =
     if d <> 1 then d
