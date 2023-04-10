@@ -1,9 +1,6 @@
 (library
  (name subgroups)
   (modules
- FArray
- FStack
- PArray
- SortedList
  Prime
- Matrix))
+ Matrix
+ Groups))

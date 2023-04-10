@@ -70,7 +70,6 @@ let reduce_left (mat, t) i =
 
 let permut mat cj ck =
   let f (i, j) =
-    Printf.printf "f(%d,%d)\n" i j;
     if j == cj then mat.(i).(ck)
     else if j == ck then mat.(i).(cj)
     else mat.(i).(j)
@@ -78,40 +77,47 @@ let permut mat cj ck =
   let n, m = size mat in
   make f n m
 
-let permut_min (mat, t) i =
+let min_index mat i =
   let _, m = size mat in
   let rec loop index j =
     if j >= m then index
     else if mat.(i).(j) < mat.(i).(index) && mat.(i).(j) > 0 then loop j (j + 1)
     else loop index (j + 1)
   in
-  let min = loop i (i + 1) in
+  loop i (i + 1)
+
+let permut_min (mat, t) i =
+  let min = min_index mat i in
   print_int min;
   (permut mat i min, permut t i min)
+
+let resolve_null (mat, t) i =
+  let min = min_index mat i in
+  if mat.(i).(min) == 0 then None else Some (permut mat i min, permut t i min)
+
+let rec hermite_loop_line (mat, t) i j m =
+  match resolve_null (mat, t) i with
+  | None -> (mat, t)
+  | Some mt ->
+      if j >= m then
+        if is_reduced mt i then reduce_left mt i
+        else hermite_loop_line (permut_min mt i) i i m
+      else if i == j then
+        if mat.(i).(j) < 0 then hermite_loop_line (change_sign mt i) i (j + 1) m
+        else hermite_loop_line mt i (j + 1) m
+      else hermite_loop_line (reduce mt i j i) i (j + 1) m
 
 let rec hermite_loop (mat, t) i =
   let n, m = size mat in
   if i >= n || i >= m then (mat, t)
-  else
-    let rec loop mt j =
-      print_string "hermite loop\n";
-      if j >= m then
-        if is_reduced mt i then reduce_left mt i else loop (permut_min mt i) i
-      else if i == j then
-        if mat.(i).(j) < 0 then loop (change_sign mt i) (j + 1)
-        else if mat.(i).(j) = 0 then loop (permut_min mt i) i
-        else loop mt (j + 1)
-      else loop (reduce mt i j i) (j + 1)
-    in
-    hermite_loop (loop (mat, t) 0) (i + 1)
+  else hermite_loop (hermite_loop_line (mat, t) i 0 m) (i + 1)
 
 let hermite mat =
   let _, m = size mat in
-  let mat,t = hermite_loop (mat, id m) 0 in
-  (*let rec loop mat,t i j =
+  let mat, t = hermite_loop (mat, id m) 0 in
+  (*TODO: let rec loop mat,t i j =
     loop (reduce_left (mat,t))*)
-    mat,t
-
+  (mat, t)
 
 let transpose mat =
   let n, m = size mat in
@@ -120,3 +126,55 @@ let transpose mat =
 let hermite_line mat =
   let h, u = hermite (transpose mat) in
   (transpose h, transpose u)
+
+let union a b =
+  let a_n, a_m = size a and b_n, b_m = size b in
+  let n = Int.max a_n b_n and m = a_m + b_m in
+  let build (i, j) =
+    if i < a_n && j < a_m then a.(i).(j)
+    else if i < b_n && j < m && j >= a_m then b.(i).(j - a_m)
+    else 0
+  in
+  make build n m
+
+let generate_hermite size deg =
+  let a = make (fun _ -> Random.int deg) size size in
+  let h, _ = hermite a in
+  h
+
+let is_line_null mat i =
+  let _, m = size mat in
+  let rec loop j =
+    Printf.printf "is_line_null(%d;%d) \n" i j;
+    if j >= m then true else if mat.(i).(j) <> 0 then false else loop (j + 1)
+  in
+  loop 0
+
+let isolate_not_null mat =
+  let mat = transpose mat in
+  let n, _ = size mat in
+  let rec loop l i =
+    Printf.printf "isolate_not__null(%d) \n" i;
+    if i >= n then l
+    else if is_line_null mat i then loop l (i + 1)
+    else loop (mat.(i) :: l) (i + 1)
+  in
+  loop [] 0
+
+let cmp_vect a b =
+  let sa = Array.length a and sb = Array.length b in
+  if sa <> sb then -1
+  else
+    let rec loop i =
+      if i >= sa then 0
+      else if a.(i) > b.(i) then -1
+      else if b.(i) > a.(i) then 1
+      else loop (i + 1)
+    in
+    loop 0
+
+let equals_not_null a b =
+  let la = List.sort cmp_vect (isolate_not_null a)
+  and lb = List.sort cmp_vect (isolate_not_null b) in
+  Printf.printf "compare \n";
+  List.compare cmp_vect la lb = 0
