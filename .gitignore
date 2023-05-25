@@ -2,4 +2,8 @@
 *pycache*
 *.bc*
 *.exe*
+*.aux
+*.log
+*.gz
+*.toc
 
