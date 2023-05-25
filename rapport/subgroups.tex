@@ -10,13 +10,10 @@
 \usepackage{pdfpages}
 \usepackage{irif}
 
-\newcommand*{\ZZ}{n\Z \x n\Z}
-
 
 \begin{document}
 \includepdf{title.pdf}
 \tableofcontents
-
 \newpage
 
 \section{Introduction}
@@ -34,8 +31,42 @@
 	sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
 
 
-\section{Simplification du problème ?}
+\section{Quelques simplifications du problème}
 % lemme des restes chinois, algorithme nombre premier, decomposition nombre premier
+\subsection{Décomposition de $n$ en éléments irréductibles}
+Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
+et $m \in \N$. En effet, soit
+$$n = \prod_i^k p_i^{\alpha_i}$$
+Par le théorème des restes chinois, on a
+$$ \ZnZ \isom (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)$$
+En particulier,
+\begin{equation*}
+	\begin{split}
+		\ZZ & \isom
+		(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
+			& \isom (\Z/p_i^{\alpha_i}\Z)^2 \x \cdots \x (\Z/p_i^{\alpha_i}\Z)^2
+	\end{split}
+\end{equation*}
+
+En pratique, pour décomposer en entier en facteurs irréductibles, nous avons utilisé la procédure de
+\textsc{$\rho$-Pollard} pour obtenir un diviseur de $n$:
+\begin{verbatim}
+fonction rho_pollard P x y k i d
+  si d <> 1 Retourne d
+  sinon
+    x = P(x) mod n
+    d = pgcd(|y - x|, n)
+    Si i = k
+      Alors Retourne rho_pollard loop P x x 2k (i + 1) d
+    Sinon Retourne rho_pollard P x y k (i + 1) d
+\end{verbatim}
+Dans notre implémentation, $P(X) = X^2 - 1$.\\
+Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.
+En triant et en regroupant les nombres premier, nous obtenons donc les différents $p^{\alpha_i}_i$
+
+\subsection{Simplification des sous-groupes}
+Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
+$\varphi$ est surjective par définition de la casse d'équivalence de a et b
 
 \section{Matrices à coefficients entier et forme normales de Hermite}
 
