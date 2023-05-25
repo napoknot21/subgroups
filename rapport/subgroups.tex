@@ -29,10 +29,7 @@
 
 	D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les\\
 	sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
-
-
 \section{Quelques simplifications du problème}
-% lemme des restes chinois, algorithme nombre premier, decomposition nombre premier
 \subsection{Décomposition de $n$ en éléments irréductibles}
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
 et $m \in \N$. En effet, soit
@@ -64,19 +61,63 @@ Dans notre implémentation, $P(X) = X^2 - 1$.\\
 Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.
 En triant et en regroupant les nombres premier, nous obtenons donc les différents $p^{\alpha_i}_i$
 
+\newpage
 \subsection{Simplification des sous-groupes}
 Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
-$\varphi$ est surjective par définition de la casse d'équivalence de a et b
+$\varphi$ est surjective par définition de la classe d'équivalence de a et b.
+Montrons que $\ker \varphi = n\Z \x n\Z$.
+
+\begin{equation*}
+	\begin{split}
+		&(a,b) \in \ker \varphi \\
+		&\text{ssi } \varphi(a,b) = (\bar 0, \bar 0)\\
+		&\text{ssi } (\bar a, \bar b) = (\bar 0, \bar 0)\\
+		&\text{ssi } \bar a = \bar 0 \text{ et } \bar b = \bar 0\\
+		&\text{ssi } a \in n\Z \text{ et } b \in n\Z\\
+		&\text{ssi } (a,b) \in  n\Z \x n\Z
+	\end{split}
+\end{equation*}
+Ainsi par le premier théorème d'isomorphisme, on a
+$$\Z^2/n\Z \x n\Z \isom \ZZ $$
+Ainsi le problème se résout à trouver les sous-groupes $H$ de $\Z^2$ tels que
+$Mat \; H = \matsqr{a}{0}{b}{c}$\\
+et
+$n\Z \x n\Z \subseteq H = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{0}{\bar c}}$
+
 
 \section{Matrices à coefficients entier et forme normales de Hermite}
+%problème section précédente, il existe un nombre important de matrice similaire i.e qui
+%engendre le même sous groupe
+\subsection{Matrices à coefficients entier}
+% TODO : ajouter demo en rapport avec les matrice im AQ= im A
+\subsection{Forme normale de Hermite}
+% preuve existence ?
+% algo forme hermite
+% preuve AX = C solution ssi on peut annuler C ?
 
-% TODO : ajouter demo en rapport avec les matrice im AQ= im A etc
-%
-
-\section {Generation et Enumeration des sous-groupes}
+\section {Génération et énumération des sous-groupes}
+\subsection{Génération des sous-groupes}
 %preuve sur la bonne forme de forme normale de Hermite
+\subsection{Énumération des sous-groupes}
 %preuve sur le calcul du nombre de sous-groupe
 
+\section{Génération du treillis}
+%preuve H C H' <=> Hermite(H'|H) = H'
+%Algorithme génération du treillis
+%Choix de .dot et graphivz
+
 \section {Quelques résultats}
+\subsection{Pour n = 2}
+%pour n = 2
+\subsection{Pour n = 4}
+% pour n = 4
+\subsection{Pour n = 20}
+% pour n = 20
+
+%nombre de sous-groupes + treillis .dot
+
+\section{Références}
+%livre d'algo
+%poly du prof
 
 \end{document}
