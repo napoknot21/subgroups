@@ -20,7 +20,7 @@
 \RequirePackage{lmodern}
 \RequirePackage{bbm}
 
-
+\DeclareMathOperator{\im}{Im}
 \definecolor{defcolor}{rgb}{0.90,0.30, 0.20}
 \newcommand{\wo}{\backslash}
 \newcommand{\dtp}[2]{\textcolor{#1}{\textbf{{#2}}}}
@@ -68,6 +68,7 @@
 \newcommand{\Pa}{\mcal P}
 \newcommand{\Pb}{\mbb P}
 \newcommand{\G}{\mcal G}
+\newcommand{\GL}{\it {GL}}
 \newcommand{\bor}{\B(\R)}
 \newcommand{\fe}{\mcal E}
 \newcommand{\ZnZ}{\Z/n\Z}
@@ -121,12 +122,12 @@
     ]%
 }
 
-\newtheoremstyle{theoremStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{OliveGreen}{.}}
-{ }{\dtp{OliveGreen}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
-\newtheoremstyle{defStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{BrickRed}{.}}
-{ }{\dtp{BrickRed}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
-\newtheoremstyle{exampleStyle}{1}{1}{}{}{}{\dtp{MidnightBlue}{.}}
-{ }{\dtp{MidnightBlue}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+\newtheoremstyle{theoremStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+\newtheoremstyle{defStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+\newtheoremstyle{exampleStyle}{1}{1}{}{}{}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
 
 \newtheoremstyle{reminderStyle}{1}{1}{}{}{}{\dtp{black}{:}}
 { }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
@@ -136,17 +137,17 @@
 { }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
 
 \theoremstyle{theoremStyle}
-\newtheorem{theorem}[subsection]{Théorème}
-\newtheorem{proposition}[subsection]{Proposition}
-\newtheorem{corollary}[subsection]{Corollaire}
-\newtheorem{lemma}[subsection]{Lemme}
+\newtheorem{theorem}{Théorème}[]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[]{Corollaire}
+\newtheorem{lemma}[]{Lemme}
 
 \theoremstyle{defStyle}
-\newtheorem{definition}[subsection]{Définition}
+\newtheorem{definition}[theorem]{Définition}
 
 \theoremstyle{exampleStyle}
-\newtheorem{example}[subsection]{Exemple}
-\newtheorem{remark}[subsection]{Remarque}
+\newtheorem{example}{Exemple}[]
+\newtheorem{remark}{Remarque}[]
 
 \theoremstyle{reminderStyle}
 \newtheorem*{reminder}{Rappel}

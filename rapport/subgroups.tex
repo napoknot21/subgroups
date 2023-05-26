@@ -31,39 +31,53 @@
 	sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
 \section{Quelques simplifications du problème}
 \subsection{Décomposition de $n$ en éléments irréductibles}
+
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
-et $m \in \N$. En effet, soit
-$$n = \prod_i^k p_i^{\alpha_i}$$
-Par le théorème des restes chinois, on a
-$$ \ZnZ \isom (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)$$
-En particulier,
-\begin{equation*}
-	\begin{split}
-		\ZZ & \isom
-		(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
-			& \isom (\Z/p_i^{\alpha_i}\Z)^2 \x \cdots \x (\Z/p_i^{\alpha_i}\Z)^2
-	\end{split}
-\end{equation*}
+et $m \in \N$. En effet la proposition suivante nous garantie que le résultat est isomorphe
+\begin{proposition}
+	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$, avec $p_i$ des nombres premiers, alors
+	$$(\ZZ) \isom \prod_i^k(\Z/p_i^{\alpha_i}\Z)^2$$
+\end{proposition}
+
+\begin{proof}
+	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$. Par le théorème des restes chinois, on a
+	$$ \ZnZ \isom (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)$$
+	En particulier,
+	\begin{equation*}
+		\begin{split}
+			\ZZ & \isom
+			(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
+				& \isom (\Z/p_i^{\alpha_i}\Z)^2 \x \cdots \x (\Z/p_i^{\alpha_i}\Z)^2
+		\end{split}
+	\end{equation*}
+\end{proof}
 
 En pratique, pour décomposer en entier en facteurs irréductibles, nous avons utilisé la procédure de
 \textsc{$\rho$-Pollard} pour obtenir un diviseur de $n$:
 \begin{verbatim}
-fonction rho_pollard P x y k i d
-  si d <> 1 Retourne d
-  sinon
-    x = P(x) mod n
-    d = pgcd(|y - x|, n)
-    Si i = k
-      Alors Retourne rho_pollard loop P x x 2k (i + 1) d
-    Sinon Retourne rho_pollard P x y k (i + 1) d
+fonction rho_pollard P n x y k i d
+    Si d <> 1:
+        Retourne d
+    Sinon:
+        x = P(x) mod n
+        d = pgcd(|y - x|, n)
+        Si i = k:
+            Alors Retourne rho_pollard loop P n x x 2k (i + 1) d
+        Sinon Retourne rho_pollard P n x y k (i + 1) d
 \end{verbatim}
-Dans notre implémentation, $P(X) = X^2 - 1$.\\
-Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.
-En triant et en regroupant les nombres premier, nous obtenons donc les différents $p^{\alpha_i}_i$
+Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.\\
+En triant et en regroupant les nombres premier, nous obtenons donc les différents $p^{\alpha_i}_i$.\\
+Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
+%TODO : Ajout algo test primarite ?
 
 \newpage
 \subsection{Simplification des sous-groupes}
-Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
+
+\begin{proposition}
+	$$\Z^2/n\Z \x n\Z \isom \ZZ $$
+\end{proposition}
+\begin{proof}
+	Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
 $\varphi$ est surjective par définition de la classe d'équivalence de a et b.
 Montrons que $\ker \varphi = n\Z \x n\Z$.
 
@@ -79,18 +93,60 @@ Montrons que $\ker \varphi = n\Z \x n\Z$.
 \end{equation*}
 Ainsi par le premier théorème d'isomorphisme, on a
 $$\Z^2/n\Z \x n\Z \isom \ZZ $$
-Ainsi le problème se résout à trouver les sous-groupes $H$ de $\Z^2$ tels que
-$Mat \; H = \matsqr{a}{0}{b}{c}$\\
+\end{proof}
+Ainsi le problème se résout à trouver les sous-groupes $G$ de $\Z^2$ tels que
+$H = \matsqr{a}{0}{b}{c}$\\
 et
-$n\Z \x n\Z \subseteq H = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{0}{\bar c}}$
+$n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{0}{\bar c}}$
 
 
 \section{Matrices à coefficients entier et forme normales de Hermite}
+Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
+$\ZZ$ par une matrice $H = \matsqr{a}{0}{b}{c}$. Cependant, ces matrices ne sont pas uniques. C'est
+pourquoi, nous allons utiliser les formes normales d'Hermite.
+Énonçons d'abord quelques propriété sur les matrices à coefficients entier.
 %problème section précédente, il existe un nombre important de matrice similaire i.e qui
 %engendre le même sous groupe
 \subsection{Matrices à coefficients entier}
-% TODO : ajouter demo en rapport avec les matrice im AQ= im A
-\subsection{Forme normale de Hermite}
+\begin{proposition}
+	Soient $A \in \M_{m,n}(\Z)$ et $Q \in \GL_n(\Z)$, alors
+	$$\im AQ = \im A$$
+\end{proposition}
+\begin{proof}
+	Soit $y \in \im AQ$, il existe $x \in \Z^n$ tel que $y = AQx$. Or,
+	\begin{align*}
+		&y = AQx\\
+		\implies &y = A(Qx)\\
+		\implies &y \in \im A
+	\end{align*}
+	Donc $\im AQ \subseteq \im A$.\\
+	Soit $y \in \im A$. Il existe $x \in \Z^n$ tel que $y = Ax$.\\
+	Cherchons $z \in \Z^n$ tel que $y = Ax = AQz$
+	\begin{align*}
+		&Ax = AQz\\
+		\implies &A(x) = A(Qz)\\
+		\implies &x = Qz\\
+		\implies &\inv Q x = z \text{ (car $B \in \GL_n(\Z)$)}
+	\end{align*}
+	Donc il existe bien un $z \in \Z^n$ tel que $ABz = y$. Donc $y \in \im AQ$.\\
+	D'où $\im AQ = \im A$
+
+\end{proof}
+\subsection{Formes normales de Hermite}
+Nous allons désormais énoncer quelques propriétés utiles sur les formes normales de Hermite.
+\begin{definition}
+	Soit $A \in \M_{m,n}(\Z)$. Alors il existe une unique matrice échelonnée
+	réduite suivant les colonnes $H \in \M_{m,n}(\Z)$ telle qu'il existe $Q \in \GL_n(\Z)$
+	avec $H = AQ$. La matrice $H$ s'appelle la forme normale de Hermite de A.
+\end{definition}
+Nous supposerons l'unicité admise, l'algorithme suivant nous montre son existence.
+
+\begin{verbatim}
+	Fonction hermite A:
+	    Pour chaque i <= n :
+
+
+\end{verbatim}
 % preuve existence ?
 % algo forme hermite
 % preuve AX = C solution ssi on peut annuler C ?
