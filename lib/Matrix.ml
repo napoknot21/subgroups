@@ -55,6 +55,7 @@ let reduce (mat, t) li cj ck =
     if mat.(li).(ck) < 0 then change_sign (mat, t) ck else (mat, t)
   in
   let k = mat.(li).(cj) / mat.(li).(ck) in
+  Printf.printf "%d - %d*%d\n" cj k ck;
   (assign_col mat cj (-k) ck, assign_col t cj (-k) ck)
 
 let is_reduced (mat, _) i =
@@ -110,7 +111,7 @@ let rec hermite_loop_line (mat, t) i j m =
 let rec hermite_loop (mat, t) i =
   let n, m = size mat in
   if i >= n || i >= m then (mat, t)
-  else hermite_loop (hermite_loop_line (mat, t) i 0 m) (i + 1)
+  else hermite_loop (hermite_loop_line (mat, t) i i m) (i + 1)
 
 let hermite mat =
   let _, m = size mat in
