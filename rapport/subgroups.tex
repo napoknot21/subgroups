@@ -16,6 +16,11 @@
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.96,0.96,0.95}
+\newcommand*{\pmZpmZ }{p^m\Z \x p^m\Z}
+\newcommand*{\ZZpmZ}{\Z^2/\pmZpmZ}
+\newcommand*{\ZZnZ}{\Z^2/\nZnZ}
+
+
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},
@@ -313,15 +318,20 @@ Nous n'avons donc plus qu'à trouver des matrices de la forme
 $H = \matsqr{a}{0}{b}{c}$ telle que
 $$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
 
-\begin{proposition}
+\begin{proposition}\label{ha_hb_ssi_ima_imb}
 	Soient $A,B \in \M_{m,n}(\Z)$.\\
 	Soit $H_A$ (resp. $H_B$) la forme normale de Hermite de $A$ (resp. $B$). Alors,
-	$$ H_A = H_B \implies \im A = \im B$$
+	$$ H_A = H_B \ssi \im A = \im B$$
 \end{proposition}
 
 \begin{proof}
-	Par la proposition \ref{ima_imh}, on a
+	Supposons que $H_A = H_B$.	Par la proposition \ref{ima_imh}, on a
 	$$\im A = \im H_A = \im H_B = \im B$$
+	Réciproquement, supposons que $\im A = \im B$. Par la proposition \ref{ima_imh}, on a
+	$$\im A = \im H_A = \im H_B = \im B$$
+	Donc les vecteurs colonnes de $H_A$ qui génèrent $\im H_A$ sont les mêmes que ceux de
+	$H_B$ qui génèrent $\im H_B$, d'où $H_A = H_B$
+
 \end{proof}
 
 Cette proposition nous affirme donc qu'en traitant seulement
@@ -329,7 +339,7 @@ les formes normales de Hermite, nous pourrons générer tous les sous-groupes de
 
 La proposition suivante, va nous être utile pour trouver la bonne forme des matrices de Hermite
 ainsi que la génération du treillis.
-\newpage
+
 \begin{proposition}\label{guh_g_ssi_a_sim_b}
 	Soient $A,B \in \M_{m,n}$ deux formes normales de Hermite et soit $G$ (resp. $H$) le
 	groupe engendré par les colonnes de $A$ (resp. $B$). Alors,
@@ -352,35 +362,144 @@ ainsi que la génération du treillis.
 
 Nous avons désormais tous les outils à notre disposition pour
 démontrer la forme voulue des matrices ainsi que la formule permettant de compter le nombre
-de sous-groupe de $\ZZ$
+de sous-groupe de $\ZZnZ$
+
+
 \section {Génération et énumération des sous-groupes}
 Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
-les sous-groupes de $\ZZ$, la formule permettant de les compter ainsi que quelques propositions
+les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
 sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_chinois} que nous pouvons nous
 restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
 Ainsi dans cette section, nous supposerons que $n = p^m$.
+
 \subsection{Génération des sous-groupes}
 Commençons tout d'abord par montrer la forme des matrices dont les vecteurs colonne génèrent
-les sous-groupes de $\ZZ$. Dans la section \ref{simp_ss_gr}, nous avons montré que les
+les sous-groupes de $\ZZpmZ$. Dans la section \ref{simp_ss_gr}, nous avons montré que les
 sous-groupes de $\Z^2$ recherché sont les sous groupes $G$ tels que
-$\nZnZ \subseteq G$, \cad
-$$ G \cup \nZnZ = G$$
+$\pmZpmZ \subseteq G$, \cad
+$$ G \cup \pmZpmZ = G$$
 Par la proposition \ref{guh_g_ssi_a_sim_b}, cela revient à trouver les
 matrices $H = \begin{pmatrix}
-		a & 0 \\
-		b & c
+		\alpha & 0      \\
+		\beta  & \gamma
 	\end{pmatrix}$
-telles que $$(H | Mat(\nZnZ)) =
+telles que $$(H | Mat(\pmZpmZ)) =
 	\begin{pmatrix}
-		a & 0 & p^m & 0   \\
-		b & c & 0   & p^m
+		\alpha & 0      & p^m & 0   \\
+		\beta  & \gamma & 0   & p^m
 	\end{pmatrix}
 	\sim	\begin{pmatrix}
-		a & 0 \\
-		b & c
+		\alpha & 0      \\
+		\beta  & \gamma
 	\end{pmatrix}
 	= H
 $$
+
+\begin{theorem}
+	Les seules matrices dont les colonnes génèrent un sous-groupe de $\ZZpmZ$
+	sont les matrices de la forme
+	$$H =
+		\begin{pmatrix}
+			p^a & 0   \\
+			j   & p^b
+		\end{pmatrix}
+		\text{avec $a \le m$, $b \le m$ et $j < p^b$}
+	$$
+	$$ \text{ ou }$$
+	$$ H =\begin{pmatrix}
+			p^a  & 0   \\
+			jp^k & p^b
+		\end{pmatrix}
+		\text{avec $a \le m$, $b \le m$, $k \le m$ et $j < p^{b - k}$}
+	$$
+
+\end{theorem}
+\begin{proof}
+	Montrons tout d'abord que ces matrices sont les seules qui génèrent les sous-groupe de $\ZZ$.\\
+	Supposons qu'il existe $H,H'$ deux formes normales de Hermite qui génèrent $G$ un sous-groupe
+	de $\ZZ$. Alors, on a $\im H = \im H'$ et par la proposition \ref{ha_hb_ssi_ima_imb}, $H = H'$.\\
+	Nous pouvons donc créer une classe d'équivalence pour la relation $\sim$ où la matrice de hermite
+	est la représentante de ces classes.\\
+	Montrons désormais l'existence de telles matrices.\\
+	Soit
+	$H = \begin{pmatrix}
+			a & 0 \\
+			b & c
+		\end{pmatrix}$
+	On cherche à réaliser des operations élémentaires telles que
+	\begin{equation*}
+		A = \begin{pmatrix}
+			\alpha & 0      & p^m & 0   \\
+			\beta  & \gamma & 0   & p^m
+		\end{pmatrix}
+		\longrightarrow
+		\begin{pmatrix}
+			\alpha & 0      & 0 & 0 \\
+			\beta  & \gamma & 0 & 0
+		\end{pmatrix}
+	\end{equation*}
+	Annuler $a_{1\,3} = a_{2\,4} = p^m$ nécessite les conditions suivante sur $\alpha$ et $\beta$ :
+	$$\begin{cases*}
+			\alpha = p^a \text{ avec } a \le m\\
+			\gamma = p^b \text{ avec } a \le m\\
+		\end{cases*}$$
+	Nous pouvons donc réaliser les opérations $C_3 \leftarrow C_3 -p^{m-a}C_1$ et
+	$C_4 \leftarrow C_4 -p^{m-b}C_2$. Ceci nous donne donc :
+	\begin{equation*}
+		\begin{pmatrix}
+			\alpha & 0      & p^m & 0   \\
+			\beta  & \gamma & 0   & p^m
+		\end{pmatrix}
+		\overset{C_3 \leftarrow C_3 -p^{m-a}C_1 }{\overset{ C_4 \leftarrow C_4 -p^{m-b}C_2}{\longrightarrow}}
+		\begin{pmatrix}
+			\alpha & 0      & 0             & 0 \\
+			\beta  & \gamma & -p^{m-a}\beta & 0
+		\end{pmatrix}
+	\end{equation*}
+	Nous cherchons désormais $\beta$ tel que $\divided{p^b}{\beta p^{m-a}}$.\\
+	Tout d'abord, par la définition de la forme normale de Hermite, $\beta< p^b$.\\
+	Nous pouvons isoler deux cas en fonction de $a$ et $b$ :\\
+	\begin{itemize}
+		\item Si $a + b \le m$, alors $b \le m - a$ et $\divided{p^b}{p^{m-a}}$ et
+		      donc $\divided{p^b}{\beta p^{m-a}}$.\\
+		\item Sinon $m \le a + b \le 2m \implies 0 \le a + b -m \le n$.\\
+		      On pose $k = a + b -m$ et on a donc $0 \le k \le m$.\\
+		      On pose $\beta = ip^k$ avec $0 \le i < p^{b - k}$. On a bien
+		      $\fa i \cma \beta = ip^k < p^b$.\\
+		      De plus $\divided{p^b}{ip^kp^{m-a}}$ car $\divided{p^b}{p^kp^{m-a}}$
+		      car $b = k + m - a$
+	\end{itemize}
+	Ainsi, dans les deux cas, nous pouvons annuler $a_{2\,3}$ et nous obtenons bien la matrice
+	suivante en faisant l'operations élémentaire.
+	$\begin{pmatrix}
+			\alpha & 0      & 0 & 0 \\
+			\beta  & \gamma & 0 & 0
+		\end{pmatrix}$.\\
+	Dans le premier cas, nous obtenons en posant $j = \beta < p^b$
+	$$\begin{pmatrix}
+			p^a & 0   & 0 & 0 \\
+			j   & p^b & 0 & 0
+		\end{pmatrix}
+		\sim
+		\begin{pmatrix}
+			p^a & 0   \\
+			j   & p^b
+		\end{pmatrix}
+	$$
+	Dans le deuxième cas, nous obtenons en posant $j = i < p^{b-k}$
+	$$\begin{pmatrix}
+		p^a & 0   & 0 & 0 \\
+		jp^k   & p^b & 0 & 0
+	\end{pmatrix}
+	\sim
+	\begin{pmatrix}
+		p^a & 0   \\
+		jp^k   & p^b
+	\end{pmatrix}
+$$
+Ce qui démontre bien l'existence de ces matrices.
+
+\end{proof}
 %preuve sur la bonne forme de forme normale de Hermite
 \subsection{Énumération des sous-groupes}
 %preuve sur le calcul du nombre de sous-groupe
