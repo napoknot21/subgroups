@@ -70,9 +70,12 @@
 
 \begin{document}
 \includepdf{title.pdf}
-\tableofcontents
+\hfill
 \newpage
+\tableofcontents
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Introduction}
 Il est très facile de décrire tous les sous-groupes d'un groupe cyclique
 d'ordre $n$ : il y en a exactement un par diviseur positif de $n$.
@@ -87,7 +90,11 @@ normales de Hermite. Nous montrerons aussi une formule permettant de les compter
 
 D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les\\
 sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section{Quelques simplifications du problème}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Décomposition de $n$ en éléments irréductibles}\label{theoreme_chinois}
 
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
@@ -127,8 +134,7 @@ Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.\\
 En triant et en regroupant les nombres premier, nous obtenons donc les différents $p^{\alpha_i}_i$.\\
 Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 %TODO : Ajout algo test primarite ?
-
-\newpage
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Simplification des sous-groupes}\label{simp_ss_gr}
 
 \begin{proposition}
@@ -157,6 +163,8 @@ $H = \matsqr{a}{c}{b}{d}$\\
 et
 $n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{\bar d}}$
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section{Matrices à coefficients entier et forme normales de Hermite}
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
 $\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
@@ -164,6 +172,7 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 Énonçons d'abord une proposition les matrices à coefficients entier qui nous sera forte utile par la suite.
 %problème section précédente, il existe un nombre important de matrice similaire i.e qui
 %engendre le même sous groupe
+%- - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Matrices à coefficients entier}
 \begin{proposition}\label{ima_imaq}
 	Soient $A \in \M_{m,n}(\Z)$ et $Q \in \GL_n(\Z)$, alors
@@ -177,7 +186,6 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 		\implies & y \in \im A
 	\end{align*}
 	Donc $\im AQ \subseteq \im A$.
-	\newpage
 	Soit $y \in \im A$. Il existe $x \in \Z^n$ tel que $y = Ax$.\\
 	Cherchons $z \in \Z^n$ tel que $y = Ax = AQz$
 	\begin{align*}
@@ -190,6 +198,8 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 	D'où $\im AQ = \im A$
 
 \end{proof}
+
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Formes normales de Hermite}
 Nous allons désormais énoncer la définition de la forme normale de Hermite.
 \begin{definition}
@@ -213,13 +223,13 @@ Fonction hermite_aux($A$, $i$):
 		Réduire à gauche du pivot
 		Retourner A
 	Sinon
-	$d_{k} = \min(\mset{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+	$d_{k} = \min(\Set*{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
 	Permuter $C_k$ avec $C_i$
 	hermite_aux($A$, $i$)
 
 Fonction hermite(A) :
 	Pour chaque $i$ allant de A à $n$ :
-		$d_{k} = \min(\mset{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+		$d_{k} = \min(\Set*{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
 		Si $d = None$ :
 			Continuer boucle
 		Sinon :
@@ -364,7 +374,8 @@ Nous avons désormais tous les outils à notre disposition pour
 démontrer la forme voulue des matrices ainsi que la formule permettant de compter le nombre
 de sous-groupe de $\ZZnZ$
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section {Génération et énumération des sous-groupes}
 Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
 les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
@@ -372,6 +383,7 @@ sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_ch
 restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
 Ainsi dans cette section, nous supposerons que $n = p^m$.
 
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Génération des sous-groupes}
 Commençons tout d'abord par montrer la forme des matrices dont les vecteurs colonne génèrent
 les sous-groupes de $\ZZpmZ$. Dans la section \ref{simp_ss_gr}, nous avons montré que les
@@ -476,7 +488,8 @@ $$
 			\beta  & \gamma & 0 & 0
 		\end{pmatrix}$.\\
 	Dans le premier cas, nous obtenons en posant $j = \beta < p^b$
-	$$\begin{pmatrix}
+	\begin{equation*}
+		\begin{pmatrix}
 			p^a & 0   & 0 & 0 \\
 			j   & p^b & 0 & 0
 		\end{pmatrix}
@@ -485,40 +498,91 @@ $$
 			p^a & 0   \\
 			j   & p^b
 		\end{pmatrix}
-	$$
+	\end{equation*}
 	Dans le deuxième cas, nous obtenons en posant $j = i < p^{b-k}$
-	$$\begin{pmatrix}
-		p^a & 0   & 0 & 0 \\
-		jp^k   & p^b & 0 & 0
-	\end{pmatrix}
-	\sim
-	\begin{pmatrix}
-		p^a & 0   \\
-		jp^k   & p^b
-	\end{pmatrix}
-$$
-Ce qui démontre bien l'existence de ces matrices.
+	\begin{equation*}
+		\begin{pmatrix}
+			p^a  & 0   & 0 & 0 \\
+			jp^k & p^b & 0 & 0
+		\end{pmatrix}
+		\sim
+		\begin{pmatrix}
+			p^a  & 0   \\
+			jp^k & p^b
+		\end{pmatrix}
+	\end{equation*}
+
+	Ce qui démontre bien l'existence de ces matrices.
 
 \end{proof}
-%preuve sur la bonne forme de forme normale de Hermite
+
+%\newpage
+
+\begin{corollary}
+	Soit la suite $\suit{A}{k}{0 \le k \le n}$ telle que
+	\begin{equation*}
+		\begin{split}
+			&A_0 = \Set*{(a,b)}{ a + b \le m}\\
+			&A_k = \Set*{
+				(a,b)}{
+				\begin{aligned}
+					 & a \le m, b \le m \\
+					 & a + b = n + k
+				\end{aligned}
+			}
+		\end{split}
+	\end{equation*}
+	Alors, l'ensemble des matrices du théorème, \cad, les matrices dont les colonnes
+	génèrent un sous-groupe de $\ZZpmZ$ est
+	$$S = \bigsqcup_{k = 0}^mM_k$$
+	où
+	\begin{equation*}
+		M_k = \Set*{
+			\begin{pmatrix}
+				p^a  & 0   \\
+				jp^k & p^b
+			\end{pmatrix}
+		}{
+			\begin{aligned}
+				 & (a, b) \in A_k    \\
+				 & 0 < j < p^{b - k}
+			\end{aligned}
+		}
+	\end{equation*}
+\end{corollary}
+
+\begin{example}
+	Cas pour $n = 2 = 2^1$
+\end{example}
+
+%proposition sur le cardinal
+%proposition sur les générateurs de ce qu'on veut (projection)
+%- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
 \subsection{Énumération des sous-groupes}
 %preuve sur le calcul du nombre de sous-groupe
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section{Génération du treillis}
 %preuve H C H' <=> Hermite(H'|H) = H'
 %Algorithme génération du treillis
 %Choix de .dot et graphivz
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section{Quelques résultats}
+%- - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - -- - - - - -
 \subsection{Pour n = 2}
 %pour n = 2
+%- - - - - -- - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -- - -
 \subsection{Pour n = 4}
 % pour n = 4
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Pour n = 20}
 % pour n = 20
 
 %nombre de sous-groupes + treillis .dot
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
 \section{Références}
 \begin{enumerate}
 
@@ -529,6 +593,4 @@ Ce qui démontre bien l'existence de ces matrices.
 	\item BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
 	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
-
-
 \end{document}

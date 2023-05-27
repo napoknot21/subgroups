@@ -21,6 +21,10 @@
 \RequirePackage{bbm}
 
 \DeclareMathOperator{\im}{Im}
+\newcommand{\bigsplit}{\mathclose{}%
+    \nonscript\;\vert\penalty\relpenalty\nonscript\;%
+    \mathopen{}%
+}
 \definecolor{defcolor}{rgb}{0.90,0.30, 0.20}
 \newcommand{\wo}{\backslash}
 \newcommand{\dtp}[2]{\textcolor{#1}{\textbf{{#2}}}}
@@ -34,12 +38,8 @@
 \newcommand{\pol}[1]{#1[X]}
 \newcommand{\mc}[1]{$\mathcal #1$}
 \newcommand{\mcal}[1]{\mathcal #1}
-\newcommand{\suit}[3]{$(#1_{#2})_{#2 \in #3}$}
 \newcommand{\matcoeff}[4]{(#1_{#2 #3})_{\cple{#2}{#3} \in #4}}
-\newcommand{\msuit}[3]{(#1_{#2})_{#2 \in #3}}
-\newcommand{\set}[2]{$\{\,#1 \; | \; #2 \,\}$}
-\newcommand{\mset}[2]{\{\,#1 \; | \; #2 \,\}}
-\newcommand{\sset}[1]{\{\,#1 \,\}}
+\newcommand{\suit}[3]{(#1_{#2})_{#3}}
 \newcommand{\monogen}[1]{\mcal M(\mcal #1)}
 \newcommand{\trigen}[1]{\sigma(\mcal #1)}
 \newcommand{\sapp}[3]{#1 :  #2 \to #3}
@@ -140,8 +140,8 @@
 \theoremstyle{theoremStyle}
 \newtheorem{theorem}{Théorème}[]
 \newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{corollary}[]{Corollaire}
-\newtheorem{lemma}[]{Lemme}
+\newtheorem{corollary}[theorem]{Corollaire}
+\newtheorem{lemma}[theorem]{Lemme}
 
 \theoremstyle{defStyle}
 \newtheorem{definition}[theorem]{Définition}
@@ -157,3 +157,18 @@
 \newtheorem*{warning}{Attention}
 
 \renewcommand\qedsymbol{$\blacksquare$}
+
+\newcommand*{\SetSuchThat}[1][]{} % reserve the name
+\newcommand*{\ColonSets}{%
+    \renewcommand*\SetSuchThat[1][]{:}%
+}
+\newcommand*{\MvertSets}{%
+    \renewcommand*\SetSuchThat[1][]{%
+        \mathclose{}%
+        \nonscript\;##1\vert\penalty\relpenalty\nonscript\;%
+        \mathopen{}%
+    }%
+}
+\MvertSets % default
+\DeclarePairedDelimiterX \Set [2] {\lbrace}{\rbrace}
+    {\,#1\SetSuchThat[\delimsize]#2\,}
