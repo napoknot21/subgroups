@@ -23,7 +23,6 @@
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\footnotesize,
     breakatwhitespace=false,
     breaklines=true,
     captionpos=b,
@@ -148,20 +147,19 @@ Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 	$$\Z^2/n\Z \x n\Z \isom \ZZ $$
 \end{proof}
 Ainsi le problème se résout à trouver les sous-groupes $G$ de $\Z^2$ tels que
-$H = \matsqr{a}{0}{b}{c}$\\
+$H = \matsqr{a}{c}{b}{d}$\\
 et
-$n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{0}{\bar c}}$
-
+$n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{\bar d}}$
 
 \section{Matrices à coefficients entier et forme normales de Hermite}
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
-$\ZZ$ par une matrice $H = \matsqr{a}{0}{b}{c}$. Cependant, ces matrices ne sont pas uniques. C'est
+$\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
 pourquoi, nous allons utiliser les formes normales d'Hermite.
-Énonçons d'abord quelques propriété sur les matrices à coefficients entier.
+Énonçons d'abord une propriété les matrices à coefficients entier qui nous sera forte utile par la suite.
 %problème section précédente, il existe un nombre important de matrice similaire i.e qui
 %engendre le même sous groupe
 \subsection{Matrices à coefficients entier}
-\begin{proposition}
+\begin{proposition}\label{ima_imaq}
 	Soient $A \in \M_{m,n}(\Z)$ et $Q \in \GL_n(\Z)$, alors
 	$$\im AQ = \im A$$
 \end{proposition}
@@ -172,7 +170,8 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 		\implies & y = A(Qx)   \\
 		\implies & y \in \im A
 	\end{align*}
-	Donc $\im AQ \subseteq \im A$.\\
+	Donc $\im AQ \subseteq \im A$.
+	\newpage
 	Soit $y \in \im A$. Il existe $x \in \Z^n$ tel que $y = Ax$.\\
 	Cherchons $z \in \Z^n$ tel que $y = Ax = AQz$
 	\begin{align*}
@@ -186,7 +185,7 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 
 \end{proof}
 \subsection{Formes normales de Hermite}
-Nous allons désormais énoncer quelques propriétés utiles sur les formes normales de Hermite.
+Nous allons désormais énoncer la définition de la forme normale de Hermite.
 \begin{definition}
 	Soit $A \in \M_{m,n}(\Z)$. Alors il existe une unique matrice échelonnée
 	réduite suivant les colonnes $H \in \M_{m,n}(\Z)$ telle qu'il existe $Q \in \GL_n(\Z)$
@@ -194,69 +193,122 @@ Nous allons désormais énoncer quelques propriétés utiles sur les formes norm
 \end{definition}
 
 \begin{proof}
-
-
 	Nous supposerons l'unicité admise, l'algorithme suivant nous montre son existence.
-
 	\begin{lstlisting}
-Fonction hermite $A$:
-	Pour chaque $i$ de 1 à $n$ :
-		trier la ligne de la colonne $i$ à la colonne $n$
-		Pour chaque $j$ de $i$ à $m$:
-			Si $a_{ij} < 0$, réaliser l'opération($C_j \longleftarrow -C_j$)
-        	$k$,$r$ = div_euclide($a_{ij}$, $a_{ii}$)
-            réaliser l'operation $C_j \longleftarrow C_j - kC_i$
-		Si la ligne n'est pas réduite :
-			recommencer la boucle
+Fonction hermite_aux($A$, $i$):
+	Pour chaque $j$ allant de $i$ à $m$ :
+		Si i = j :
+			Si $a_{ij} < 0$ : réaliser l'opération $C_j \leftarrow -C_j$
+		Sinon :
+			Si $a_{ij}$ < 0 : réaliser l'opération $C_j \leftarrow -C_j$
+			$k,r$ = div_euclide($a_{ij}$, $a_{ii}$)
+			réaliser l'opération $C_j \leftarrow C_j - kC_i$
+	Si $\forall i < j <= m, a_{ij} = 0$ :
+		Réduire à gauche du pivot
+		Retourner A
+	Sinon
+	$d_{k} = \min(\mset{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+	Permuter $C_k$ avec $C_i$
+	hermite_aux($A$, $i$)
 
-	Retourner A
-\end{lstlisting}
-
-	\begin{lstlisting}
-	let rec hermite_loop_line (mat, t) i j m =
-  match resolve_null (mat, t) i with
-  | None -> (mat, t)
-  | Some mt ->
-      if j >= m then
-        if is_reduced mt i then reduce_left mt i
-        else hermite_loop_line (permut_min mt i) i i m
-      else if i == j then
-        if mat.(i).(j) < 0 then hermite_loop_line (change_sign mt i) i (j + 1) m
-        else hermite_loop_line mt i (j + 1) m
-      else hermite_loop_line (reduce mt i j i) i (j + 1) m
-
-let rec hermite_loop (mat, t) i =
-  let n, m = size mat in
-  if i >= n || i >= m then (mat, t)
-  else hermite_loop (hermite_loop_line (mat, t) i 0 m) (i + 1)
-\end{lstlisting}
-
-\begin{lstlisting}
-Fonction hermite $A$:
-	Pour chaque $i$ allant de 1 à $m$ :
-		Pour chaque $j$ allant de  
-		Si $\forall i < j <= m, a_{ij} = 0$:
+Fonction hermite(A) :
+	Pour chaque $i$ allant de A à $n$ :
+		$d_{k} = \min(\mset{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+		Si $d = None$ :
 			Continuer boucle
-		Permuter $C_j$ contenant $a_{ij} = \min(\mset{a_{ij}}{i <= j <= n a_{ij} \ne 0})$ avec $C_i$
+		Sinon :
+			Permuter $C_k$ avec $C_i$
+			$A$ = hermite_aux($A$, $i$)
+	vérifier signe des pivots de $A$
+	Retourner $A$
+
+
 \end{lstlisting}
 
-	Montrons la terminaison de l'algorithme.\\
-	À chaque tour de boucle $i$, nous réalisons une réduction de la ligne grâce à la division
-	euclidienne.\\
-	Et $\forall j, a^{(n)}_{ij} < a^{(n + 1)}_{ij}$ où $a^{(k)_{ij}}$ est la valeur de $a_{ij}$
-	au $k^e$ tour de boucle. Donc il existe un rang $N$, où la ligne sera réduite au maximum.
-	Ce qui nous permet de traiter les lignes restantes. Donc l'algorithme termine bien.\\
-	Montrons sa correction.
-	À chaque tour de boucle $i$, si la ligne n'est pas réduite,
-	alors on continue de la réduire avant de la passer à la suivante. Cela nous assure donc que le lignes sont bien réduites.
-	Ainsi à la fin des boucles, les lignes sont bien réduites.
+	Montrons la terminaison de l'algorithme.
+	La fonction hermite\_aux se repose sur l'algorithme \\d'euclide. En effet, pour tout $i < j < m$, on réalise la
+	division euclidienne de $a_{ij}$ par $a_{ii}$.\\
+	Si à la fin de la boucle il existe $j$ tel que
+	$a_{ij} < a_{ii}$, alors on recommence en permutant $C_j$ et $C_i$ et $a_{ij}$ devient notre nouveau pivot.\\
+	Ainsi, par la correction de l'algorithme d'Euclide, il existe un rang $N$ où tous les $a_{ij}$ avec $j> i$ sont tous nuls.
+	Ainsi la fonction hermite\_aux se termine. La fonction hermite étant seulement une boucle, elle se termine également.
+	Donc l'algorithme se termine bien.
 
-
+	Montrons la correction de l'algorithme.	La fonction hermite\_aux se repose sur l'algorithme\\
+	d'Euclide en utilisant des opérations élémentaires sur les matrices.\\
+	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que	pour tout $j > i$, $a_{ij} = 0$.\\
+	De plus, avant de retourner, on réalise la division euclidienne des $a_{ij}$ par $a_{ii}$ avec $0 < j < i$.\\
+	Donc les $a_{ij}$ sont les restes des divisions euclidiennes et sont donc réduit au maximum.\\
+	On réalise ces opération sur toutes les lignes sans jamais revenir sur les lignes précédentes.
+	Enfin, on vérifie le signe de pivot et on change la colonne de signe si nécessaire.\\
+	Ainsi la matrice obtenue est bien échelonnée réduite,
+	il s'agit donc d'une forme normale de Hermite, ce qui prouve donc son existence.
 
 \end{proof}
 
-% preuve existence ?
-% algo forme hermite
+\begin{example}
+	\begin{equation*}
+		\begin{split}
+			A =
+			\begin{pmatrix}
+				2  & 1  \\
+				4  & 10 \\
+				5  & 13 \\
+				13 & 12
+			\end{pmatrix}
+			\overset{C_2 \leftrightarrow C_1}{\longrightarrow}
+			\begin{pmatrix}
+				1  & 2  \\
+				10 & 4  \\
+				13 & 5  \\
+				12 & 13
+			\end{pmatrix}
+			\overset{C_2 \leftarrow C_2 - 2C_1}{\longrightarrow}
+			\begin{pmatrix}
+				1  & 0   \\
+				10 & -16 \\
+				13 & 3   \\
+				12 & -14
+			\end{pmatrix}
+			\overset{C_2 \leftarrow - C_2}{\longrightarrow}
+			\begin{pmatrix}
+				1  & 0  \\
+				10 & 16 \\
+				13 & -3 \\
+				12 & 14
+			\end{pmatrix} = H
+		\end{split}
+	\end{equation*}
+
+\end{example}
+\begin{remark}
+	Il existe des algorithmes beaucoup plus efficace pour calculer la forme normale de Hermite comme
+	l'algorithme de de Domich \& Ai (1989) qui réalise les calculs modulo le déterminant de $A$ ou
+	l'algorithme de Micciancio-Warinshi. Cependant ces algorithmes étant plus ou moins compliqué, le choix ici
+	a été de faire nous même un algorithme à partir	de la méthode naïve employée lors du calcul de la forme normale de
+	Hermite à la main.
+\end{remark}
+Nous allons énoncer quelques résultats utiles des formes normales de Hermite.
+Tout d'abord, la proposition suivante nous permettra de réduire nos forme de matrices dont les colonnes
+génèrent un sous groupe de $\Z^2$
+\begin{proposition}
+	Soit $A \in \M_{m,n}(\Z)$ et soit $H$ sa forme normale d'Hermite. Alors,
+	$$\im A = \im H$$
+\end{proposition}
+
+\begin{proof}
+	C'est une application de la proposition \ref{ima_imaq} avec $H= AQ$ avec $Q \in \GL_n(\Z)$
+
+\end{proof}
+
+Ainsi les colonnes de la forme normale de Hermite $H$ d'une matrice $A$ génèrent le même
+sous-groupe que les colonnes de $A$.\\
+Nous n'avons donc plus qu'à trouver des matrices de la forme
+$H = \matsqr{a}{0}{b}{c}$ telle que
+$$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
+% A = BL <-> H_A = H_B <-> Im A = Im B
+% H_A = H_B <-> A = BL
+% H_A = H_B -> Im A = Im B
 % preuve AX = C solution ssi on peut annuler C ?
 
 \section {Génération et énumération des sous-groupes}
@@ -281,7 +333,15 @@ Fonction hermite $A$:
 %nombre de sous-groupes + treillis .dot
 
 \section{Références}
-%livre d'algo
-%poly du prof
+\begin{enumerate}
+
+	\item COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
+	\item \textbf{TODO livre algo}
+	\item PERNET Clément, \textit{Calcul de formes normales matricielles: de
+	l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
+	\item BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
+	Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
+\end{enumerate}
+
 
 \end{document}

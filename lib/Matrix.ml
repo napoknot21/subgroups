@@ -97,21 +97,20 @@ let resolve_null (mat, t) i =
   if mat.(i).(min) == 0 then None else Some (permut mat i min, permut t i min)
 
 let rec hermite_loop_line (mat, t) i j m =
-  match resolve_null (mat, t) i with
-  | None -> (mat, t)
-  | Some mt ->
       if j >= m then
-        if is_reduced mt i then reduce_left mt i
-        else hermite_loop_line (permut_min mt i) i i m
+        if is_reduced (mat,t) i then reduce_left (mat,t) i
+        else hermite_loop_line (permut_min (mat,t) i) i i m
       else if i == j then
-        if mat.(i).(j) < 0 then hermite_loop_line (change_sign mt i) i (j + 1) m
-        else hermite_loop_line mt i (j + 1) m
-      else hermite_loop_line (reduce mt i j i) i (j + 1) m
+        if mat.(i).(j) < 0 then hermite_loop_line (change_sign (mat,t) i) i (j + 1) m
+        else hermite_loop_line (mat,t) i (j + 1) m
+      else hermite_loop_line (reduce (mat,t) i j i) i (j + 1) m
 
 let rec hermite_loop (mat, t) i =
   let n, m = size mat in
   if i >= n || i >= m then (mat, t)
-  else hermite_loop (hermite_loop_line (mat, t) i i m) (i + 1)
+  else match resolve_null (mat, t) i with
+    | None -> hermite_loop (mat,t) (i+1) (* Nul line*)
+    | Some mt -> hermite_loop (hermite_loop_line mt i i m) (i + 1)
 
 let hermite mat =
   let _, m = size mat in
