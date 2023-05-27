@@ -73,7 +73,8 @@ Il est très facile de décrire tous les sous-groupes d'un groupe cyclique
 d'ordre $n$ : il y en a exactement un par diviseur positif de $n$.
 Pourtant, étonnamment, décrire tous les sous-groupes d'un groupe abélien
 est en général un problème difficile.\\
-Dans ce projet, nous nous se proposons de considérer cette question pour le groupe $\ZZ$.
+Dans ce projet, nous nous se proposons de considérer cette question pour le groupe $\ZZ$ qui,
+de nos jour n'a pas l'air d'avoir été traitée.
 
 D'un point de vue théorique, nous mettrons en avant la générations et la caractérisations de \\
 sous-groupes grâce aux vecteurs colonne des matrices à coefficients entier et en particulier aux formes
@@ -82,7 +83,7 @@ normales de Hermite. Nous montrerons aussi une formule permettant de les compter
 D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les\\
 sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
 \section{Quelques simplifications du problème}
-\subsection{Décomposition de $n$ en éléments irréductibles}
+\subsection{Décomposition de $n$ en éléments irréductibles}\label{theoreme_chinois}
 
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
 et $m \in \N$. En effet la proposition suivante nous garantie que le résultat est isomorphe
@@ -123,7 +124,7 @@ Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 %TODO : Ajout algo test primarite ?
 
 \newpage
-\subsection{Simplification des sous-groupes}
+\subsection{Simplification des sous-groupes}\label{simp_ss_gr}
 
 \begin{proposition}
 	$$\Z^2/n\Z \x n\Z \isom \ZZ $$
@@ -155,7 +156,7 @@ $n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
 $\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
 pourquoi, nous allons utiliser les formes normales d'Hermite.
-Énonçons d'abord une propriété les matrices à coefficients entier qui nous sera forte utile par la suite.
+Énonçons d'abord une proposition les matrices à coefficients entier qui nous sera forte utile par la suite.
 %problème section précédente, il existe un nombre important de matrice similaire i.e qui
 %engendre le même sous groupe
 \subsection{Matrices à coefficients entier}
@@ -226,17 +227,17 @@ Fonction hermite(A) :
 \end{lstlisting}
 
 	Montrons la terminaison de l'algorithme.
-	La fonction hermite\_aux se repose sur l'algorithme \\d'euclide. En effet, pour tout $i < j < m$, on réalise la
+	La fonction \texttt{hermite\_aux} se repose sur l'algorithme \\d'euclide. En effet, pour tout $i < j < m$, on réalise la
 	division euclidienne de $a_{ij}$ par $a_{ii}$.\\
 	Si à la fin de la boucle il existe $j$ tel que
 	$a_{ij} < a_{ii}$, alors on recommence en permutant $C_j$ et $C_i$ et $a_{ij}$ devient notre nouveau pivot.\\
 	Ainsi, par la correction de l'algorithme d'Euclide, il existe un rang $N$ où tous les $a_{ij}$ avec $j> i$ sont tous nuls.
-	Ainsi la fonction hermite\_aux se termine. La fonction hermite étant seulement une boucle, elle se termine également.
+	Ainsi la fonction \texttt{hermite\_aux} se termine. La fonction \texttt{hermite} étant seulement une boucle, elle se termine également.
 	Donc l'algorithme se termine bien.
 
 	Montrons la correction de l'algorithme.	La fonction hermite\_aux se repose sur l'algorithme\\
 	d'Euclide en utilisant des opérations élémentaires sur les matrices.\\
-	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que	pour tout $j > i$, $a_{ij} = 0$.\\
+	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que pour tout $j > i$, $a_{ij} = 0$.\\
 	De plus, avant de retourner, on réalise la division euclidienne des $a_{ij}$ par $a_{ii}$ avec $0 < j < i$.\\
 	Donc les $a_{ij}$ sont les restes des divisions euclidiennes et sont donc réduit au maximum.\\
 	On réalise ces opération sur toutes les lignes sans jamais revenir sur les lignes précédentes.
@@ -288,10 +289,15 @@ Fonction hermite(A) :
 	a été de faire nous même un algorithme à partir	de la méthode naïve employée lors du calcul de la forme normale de
 	Hermite à la main.
 \end{remark}
+\begin{definition}
+	Soient $A \in \M_{m,n}$, $B \in \M_{m,p}$ deux formes normales de Hermite
+	$$A \sim B \text{ ssi les colonnes non nulles de } A
+		\text{ sont les mêmes que les colonnes non nulles de } B.$$
+\end{definition}
 Nous allons énoncer quelques résultats utiles des formes normales de Hermite.
 Tout d'abord, la proposition suivante nous permettra de réduire nos forme de matrices dont les colonnes
 génèrent un sous groupe de $\Z^2$
-\begin{proposition}
+\begin{proposition}\label{ima_imh}
 	Soit $A \in \M_{m,n}(\Z)$ et soit $H$ sa forme normale d'Hermite. Alors,
 	$$\im A = \im H$$
 \end{proposition}
@@ -306,13 +312,75 @@ sous-groupe que les colonnes de $A$.\\
 Nous n'avons donc plus qu'à trouver des matrices de la forme
 $H = \matsqr{a}{0}{b}{c}$ telle que
 $$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
-% A = BL <-> H_A = H_B <-> Im A = Im B
-% H_A = H_B <-> A = BL
-% H_A = H_B -> Im A = Im B
-% preuve AX = C solution ssi on peut annuler C ?
 
+\begin{proposition}
+	Soient $A,B \in \M_{m,n}(\Z)$.\\
+	Soit $H_A$ (resp. $H_B$) la forme normale de Hermite de $A$ (resp. $B$). Alors,
+	$$ H_A = H_B \implies \im A = \im B$$
+\end{proposition}
+
+\begin{proof}
+	Par la proposition \ref{ima_imh}, on a
+	$$\im A = \im H_A = \im H_B = \im B$$
+\end{proof}
+
+Cette proposition nous affirme donc qu'en traitant seulement
+les formes normales de Hermite, nous pourrons générer tous les sous-groupes de $\Z^2$
+
+La proposition suivante, va nous être utile pour trouver la bonne forme des matrices de Hermite
+ainsi que la génération du treillis.
+\newpage
+\begin{proposition}\label{guh_g_ssi_a_sim_b}
+	Soient $A,B \in \M_{m,n}$ deux formes normales de Hermite et soit $G$ (resp. $H$) le
+	groupe engendré par les colonnes de $A$ (resp. $B$). Alors,
+	$$G \cup H = G \ssi hermite(A | B) \sim A$$
+	où $hermite(A|B)$ est la forme normale de hermite de la matrice augmentée $(A | B)$.
+\end{proposition}
+
+\begin{proof}
+	Supposerons que $G \cup H = G$. Alors $ H \subseteq G$.Donc
+	$$\forall x \in H \cma  \ex y \in G \cma \ex \lambda \in \Z \cma x = \lambda y$$
+	En particulier la base de $H$ est une combinaison linéaire de la base de $G$. D'où
+	$$hermite(A | B) = (A | 0) \sim A$$
+	Réciproquement, soit $hermite(A | B) \sim A$. Alors par définition de la relation
+	d'équivalence,\\
+	$hermite(A | B) = (A | 0)$. Ainsi les colonnes de B sont des combinaisons linéaire des
+	colonnes de $A$,\\
+	\cad \, la base de $H$ est une combinaison linéaire de la base de $G$.
+	$$\text{D'où } H \subseteq G \text{ et } G \cup H = G$$
+\end{proof}
+
+Nous avons désormais tous les outils à notre disposition pour
+démontrer la forme voulue des matrices ainsi que la formule permettant de compter le nombre
+de sous-groupe de $\ZZ$
 \section {Génération et énumération des sous-groupes}
+Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
+les sous-groupes de $\ZZ$, la formule permettant de les compter ainsi que quelques propositions
+sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_chinois} que nous pouvons nous
+restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
+Ainsi dans cette section, nous supposerons que $n = p^m$.
 \subsection{Génération des sous-groupes}
+Commençons tout d'abord par montrer la forme des matrices dont les vecteurs colonne génèrent
+les sous-groupes de $\ZZ$. Dans la section \ref{simp_ss_gr}, nous avons montré que les
+sous-groupes de $\Z^2$ recherché sont les sous groupes $G$ tels que
+$\nZnZ \subseteq G$, \cad
+$$ G \cup \nZnZ = G$$
+Par la proposition \ref{guh_g_ssi_a_sim_b}, cela revient à trouver les
+matrices $H = \begin{pmatrix}
+		a & 0 \\
+		b & c
+	\end{pmatrix}$
+telles que $$(H | Mat(\nZnZ)) =
+	\begin{pmatrix}
+		a & 0 & p^m & 0   \\
+		b & c & 0   & p^m
+	\end{pmatrix}
+	\sim	\begin{pmatrix}
+		a & 0 \\
+		b & c
+	\end{pmatrix}
+	= H
+$$
 %preuve sur la bonne forme de forme normale de Hermite
 \subsection{Énumération des sous-groupes}
 %preuve sur le calcul du nombre de sous-groupe
@@ -338,9 +406,9 @@ $$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
 	\item COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
 	\item \textbf{TODO livre algo}
 	\item PERNET Clément, \textit{Calcul de formes normales matricielles: de
-	l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
+		      l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
 	\item BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
-	Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
+	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
 
 
