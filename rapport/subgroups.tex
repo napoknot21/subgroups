@@ -92,7 +92,7 @@ D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable d
 sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 \section{Quelques simplifications du problème}
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Décomposition de $n$ en éléments irréductibles}\label{theoreme_chinois}
@@ -135,6 +135,7 @@ En triant et en regroupant les nombres premier, nous obtenons donc les différen
 Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 %TODO : Ajout algo test primarite ?
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\newpage
 \subsection{Simplification des sous-groupes}\label{simp_ss_gr}
 
 \begin{proposition}
@@ -164,7 +165,7 @@ et
 $n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{\bar d}}$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 \section{Matrices à coefficients entier et forme normales de Hermite}
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
 $\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
@@ -200,6 +201,7 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 \end{proof}
 
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\newpage
 \subsection{Formes normales de Hermite}
 Nous allons désormais énoncer la définition de la forme normale de Hermite.
 \begin{definition}
@@ -375,7 +377,7 @@ démontrer la forme voulue des matrices ainsi que la formule permettant de compt
 de sous-groupe de $\ZZnZ$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 \section {Génération et énumération des sous-groupes}
 Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
 les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
@@ -516,8 +518,6 @@ $$
 
 \end{proof}
 
-%\newpage
-
 \begin{corollary}
 	Soit la suite $\suit{A}{k}{0 \le k \le n}$ telle que
 	\begin{equation*}
@@ -527,14 +527,14 @@ $$
 				(a,b)}{
 				\begin{aligned}
 					 & a \le m, b \le m \\
-					 & a + b = n + k
+					 & a + b = m + k
 				\end{aligned}
 			}
 		\end{split}
 	\end{equation*}
 	Alors, l'ensemble des matrices du théorème, \cad, les matrices dont les colonnes
-	génèrent un sous-groupe de $\ZZpmZ$ est
-	$$S = \bigsqcup_{k = 0}^mM_k$$
+	génèrent les sous-groupes de $\ZZpmZ$ est
+	$$M = \bigsqcup_{k = 0}^mM_k$$
 	où
 	\begin{equation*}
 		M_k = \Set*{
@@ -544,31 +544,70 @@ $$
 			\end{pmatrix}
 		}{
 			\begin{aligned}
-				 & (a, b) \in A_k    \\
-				 & 0 < j < p^{b - k}
+				 & (a, b) \in A_k      \\
+				 & 0 \le j < p^{b - k}
 			\end{aligned}
 		}
 	\end{equation*}
 \end{corollary}
 
-\begin{example}
-	Cas pour $n = 2 = 2^1$
+\begin{proposition}
+	%projection <\pi(alpha, j), \pi(0, beta)
+\end{proposition}
+
+\newpage
+\begin{example}[Cas pour $n = 2$]
+	On a $n = 2 = 2^1$ donc $m = 1$.\\
+	Calculons les matrices appartenant à $M_0 = \Set*{
+			\begin{pmatrix}
+				p^a & 0   \\
+				j   & p^b
+			\end{pmatrix}
+		}{
+			\begin{aligned}
+				 & (a, b) \in A_0  \\
+				 & 0 \le j < p^{b}
+			\end{aligned}
+		}$\\
+	On a $A_0 = \Set*{(a,b)}{a + b \le 1} = \set{(0,0), (0,1), (1, 0)}$.
+	Ainsi
+	\begin{equation*}
+		M_0 = \set{
+			\matsqr{1}{0}{0}{1}, \matsqr{1}{0}{0}{2}, \matsqr{1}{0}{1}{2}, \matsqr{2}{0}{0}{1}
+		}
+	\end{equation*}
+	Calculons les matrices appartenant à $M_1 = \Set*{
+			\matsqr{2^a}{0}{2j}{2^b}
+		}{
+			\begin{aligned}
+				 & (a, b) \in A_1      \\
+				 & 0 \le j < 2^{b - 1}
+			\end{aligned}
+		}$.\\
+	On a $A_1 = \Set*{
+			(a,b)}{
+			\begin{aligned}
+				 & a \le 1, b \le 1 \\
+				 & a + b = 2
+			\end{aligned}
+		} = \set{(1,1)}$. Ainsi
+	$$M_0 = \set{\matsqr{2}{0}{0}{2}}$$
+%Ajouter correspondances avec les sous-groupes de \ZZ
 \end{example}
 
 %proposition sur le cardinal
-%proposition sur les générateurs de ce qu'on veut (projection)
+%card sous-groupe = p^{a + b}
 %- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
 \subsection{Énumération des sous-groupes}
 %preuve sur le calcul du nombre de sous-groupe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 \section{Génération du treillis}
-%preuve H C H' <=> Hermite(H'|H) = H'
 %Algorithme génération du treillis
 %Choix de .dot et graphivz
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
+\newpage
 \section{Quelques résultats}
 %- - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - -- - - - - -
 \subsection{Pour n = 2}
@@ -582,15 +621,15 @@ $$
 
 %nombre de sous-groupes + treillis .dot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
-\section{Références}
+\newpage
+\section{Bibliographie}
 \begin{enumerate}
 
-	\item COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
-	\item \textbf{TODO livre algo}
-	\item PERNET Clément, \textit{Calcul de formes normales matricielles: de
+	\item[[\,1\!\!]] COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
+	\item[[\,2\!\!]] \textbf{TODO livre algo}
+	\item[[\,3\!\!]] PERNET Clément, \textit{Calcul de formes normales matricielles: de
 		      l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
-	\item BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
+	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
 	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
 \end{document}

@@ -5,6 +5,7 @@
 \usepackage{xstring}
 \usepackage{mathrsfs}
 \usepackage{frcursive}
+\usepackage{setspace}
 \geometry{
 	a4paper,
 	total={170mm,257mm},
@@ -19,7 +20,7 @@
 \RequirePackage{framed}
 \RequirePackage{lmodern}
 \RequirePackage{bbm}
-
+\onehalfspacing
 \DeclareMathOperator{\im}{Im}
 \newcommand{\bigsplit}{\mathclose{}%
     \nonscript\;\vert\penalty\relpenalty\nonscript\;%
@@ -172,3 +173,4 @@
 \MvertSets % default
 \DeclarePairedDelimiterX \Set [2] {\lbrace}{\rbrace}
     {\,#1\SetSuchThat[\delimsize]#2\,}
+\newcommand{\set}[1]{\{\,#1 \,\}}
