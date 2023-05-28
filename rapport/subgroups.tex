@@ -19,8 +19,41 @@
 \newcommand*{\pmZpmZ }{p^m\Z \x p^m\Z}
 \newcommand*{\ZZpmZ}{\Z^2/\pmZpmZ}
 \newcommand*{\ZZnZ}{\Z^2/\nZnZ}
-
-
+\newcommand{\ZnZ}{\Z/n\Z}
+\newcommand{\ZpmZ}{\Z/p^m\Z}
+\newcommand{\ZZ}{\ZnZ \x \ZnZ}
+\newcommand{\ZZpm}{\ZpmZ \x \ZpmZ}
+\newcommand{\nZnZ}{n\Z \x n\Z}
+\newcommand{\Mz}{\Set*{
+	\begin{pmatrix}
+		p^a  & 0   \\
+		j & p^b
+	\end{pmatrix}
+}{
+	\begin{aligned}
+		 & (a, b) \in A_0      \\
+		 & 0 \le j < p^{b}
+	\end{aligned}
+}}
+\newcommand{\Mk}{\Set*{
+	\begin{pmatrix}
+		p^a  & 0   \\
+		jp^k & p^b
+	\end{pmatrix}
+}{
+	\begin{aligned}
+		 & (a, b) \in A_k      \\
+		 & 0 \le j < p^{b - k}
+	\end{aligned}
+}}
+\newcommand{\Az}{\Set*{(a,b)}{ a + b \le m}}
+\newcommand{\Ak}{\Set*{
+	(a,b)}{
+	\begin{aligned}
+		 & a \le m, b \le m \\
+		 & a + b = m + k
+	\end{aligned}
+}}
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},
@@ -518,7 +551,7 @@ $$
 
 \end{proof}
 
-\begin{corollary}
+\begin{corollary}\label{union_m}
 	Soit la suite $\suit{A}{k}{0 \le k \le n}$ telle que
 	\begin{equation*}
 		\begin{split}
@@ -550,12 +583,17 @@ $$
 		}
 	\end{equation*}
 \end{corollary}
-
-\begin{proposition}
-	%projection <\pi(alpha, j), \pi(0, beta)
-\end{proposition}
-
 \newpage
+\begin{proposition}\label{pi_imh}
+	Soit $\sapp{\pi}{\Z^2}{\ZZnZ}$ et soit $H \in \M_2$ une matrice de Hermite de la forme
+	$ H = \matsqr{\alpha}{0}{\beta}{\gamma}$.
+	$$H \in M \ssi \im(H)/\pmZpmZ = \pi(\im H) =
+		\gen{\pi\vectcolsqr{\alpha}{\beta}, \pi\vectcolsqr{0}{\gamma}}$$
+\end{proposition}
+\begin{proof}
+	(admise ?)
+\end{proof}
+
 \begin{example}[Cas pour $n = 2$]
 	On a $n = 2 = 2^1$ donc $m = 1$.\\
 	Calculons les matrices appartenant à $M_0 = \Set*{
@@ -592,13 +630,70 @@ $$
 			\end{aligned}
 		} = \set{(1,1)}$. Ainsi
 	$$M_0 = \set{\matsqr{2}{0}{0}{2}}$$
-%Ajouter correspondances avec les sous-groupes de \ZZ
+	Par la proposition \ref{pi_imh}, nous pouvons réaliser la correspondances entre
+	les matrices obtenues et les sous-groupes de $\ZZ$. Nous avons donc
+	\begin{equation*}
+		\begin{aligned}
+			 & \matsqr{1}{0}{0}{1}\longrightarrow (Z/2\Z)^2              \\
+			 & \matsqr{1}{0}{0}{2}\longrightarrow \gen{ \bar 1, \bar 0}  \\
+			 & \matsqr{1}{0}{1}{2}\longrightarrow \gen{ \bar 1,  \bar 1} \\
+			 & \matsqr{2}{0}{0}{1} \longrightarrow \gen{ \bar 0, \bar 1} \\
+			 & \matsqr{2}{0}{0}{2} \longrightarrow \gen{ \bar 0, \bar 0}
+		\end{aligned}
+	\end{equation*}
 \end{example}
 
-%proposition sur le cardinal
-%card sous-groupe = p^{a + b}
+\begin{proposition}
+	soit $H = \matsqr{\alpha}{0}{\beta}{\gamma}$ une forme normale d'Hermite. Alors
+	$$\left\lvert Z^2/\im H \right\rvert = \det(H) = \alpha\beta$$
+\end{proposition}
+
+\begin{proof}
+	(admise ?)
+\end{proof}
+
+\begin{remark}
+	En particulier, si $H \in M$, $ord(\pi(H))$ = $p^{a+B}$
+\end{remark}
 %- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
 \subsection{Énumération des sous-groupes}
+Grâce aux résultat démontrés dans la section précédente, nous pouvons donc énumérer les\\
+sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
+\begin{theorem}
+	Soit
+	\app{\psi}{\N^2}{\N}{(p,n)}{\sum_{i=0}^{n}(n-i)p^i + \sum_{i = 0}^{n - 1}\frac{1- p^{n-i+1}}{1 - p}}
+	Alors, le nombre de sous groupe de $\ZZpm$ est $\psi(p,m)$
+\end{theorem}
+
+\begin{proof}
+	Par le corollaire \ref{union_m}, on sait que M = $\bigsqcup\limits_{k = 0}^{m} M_k$
+	est l'ensemble des matrices dont les colonnes engendrent les sous-groupes de $\ZZpm$.
+	Ainsi,
+	$$| M | = |\ZZpm|$$
+	De plus,
+	\begin{equation*}
+		\begin{split}
+			|M| &= |\sum_{k=0}^{m} M_k|\\
+				&= \sum_{k=0}^{m}|M_k|
+		\end{split}
+	\end{equation*}
+	Calculons donc le cardinal de $M_0$ dans un premier temps, puis nous calculerons
+	le cardinal de $M_k$ pour $1 < k < m$.\\\vspace*{1cm}\\
+	On a $$M_0 =\Mz \text{ avec } A_0 = \Az$$
+	Or, pour chaque couple $(a,b) \in A_0$, on $p^b$ matrices différentes.
+	De plus, $a \le m - b$. Donc en remplaçant $b$ par $i$, on obtient
+	$$ |M_0| = \sum_{i=0}^{m}(m-i)p^i$$
+	\\\vspace*{1cm}\\
+	Calculons maintenant le cardinal des $M_k$. On a
+	$$M_k = \Mk \text{ avec } A_k = \Ak$$
+	
+\end{proof}
+
+\begin{proposition}
+	Soit $n = \prod\limits_{i = 0}^k p_i^{\alpha_i}$.\\
+	Le nombre total de sous-groupes de $\ZZ$ est
+		$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)$$
+\end{proposition}
 %preuve sur le calcul du nombre de sous-groupe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
