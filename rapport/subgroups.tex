@@ -118,8 +118,8 @@ Dans ce projet, nous nous se proposons de considérer cette question pour le gro
 de nos jour n'a pas l'air d'avoir été traitée.
 
 D'un point de vue théorique, nous mettrons en avant la générations et la caractérisations de \\
-sous-groupes grâce aux vecteurs colonne des matrices à coefficients entier et en particulier aux formes
-normales de Hermite. Nous montrerons aussi une formule permettant de les compter.
+sous-groupes grâce aux vecteurs colonne des matrices à coefficients entier et en particulier
+aux formes normales de Hermite. Nous montrerons aussi une formule permettant de les compter.
 
 D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les\\
 sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
@@ -144,7 +144,8 @@ et $m \in \N$. En effet la proposition suivante nous garantie que le résultat e
 	\begin{equation*}
 		\begin{split}
 			\ZZ & \isom
-			(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
+			(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z)%
+			\x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
 			& \isom (\Z/p_i^{\alpha_i}\Z)^2 \x \cdots \x (\Z/p_i^{\alpha_i}\Z)^2
 		\end{split}
 	\end{equation*}
@@ -203,9 +204,9 @@ $n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
 $\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
 pourquoi, nous allons utiliser les formes normales d'Hermite.
-Énonçons d'abord une proposition les matrices à coefficients entier qui nous sera forte utile par la suite.
-%problème section précédente, il existe un nombre important de matrice similaire i.e qui
-%engendre le même sous groupe
+Énonçons d'abord une proposition sur les matrices à coefficients entier qui nous sera forte
+utile par la suite.
+
 %- - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Matrices à coefficients entier}
 \begin{proposition}\label{ima_imaq}
@@ -226,7 +227,7 @@ pourquoi, nous allons utiliser les formes normales d'Hermite.
 		         & Ax = AQz                                     \\
 		\implies & A(x) = A(Qz)                                 \\
 		\implies & x = Qz                                       \\
-		\implies & \inv Q x = z \text{ (car $B \in \GL_n(\Z)$)}
+		\implies & \inv Q x = z \text{ (car $Q \in \GL_n(\Z)$)}
 	\end{align*}
 	Donc il existe bien un $z \in \Z^n$ tel que $ABz = y$. Donc $y \in \im AQ$.\\
 	D'où $\im AQ = \im A$
@@ -277,18 +278,21 @@ Fonction hermite(A) :
 \end{lstlisting}
 
 	Montrons la terminaison de l'algorithme.
-	La fonction \texttt{hermite\_aux} se repose sur l'algorithme \\d'euclide. En effet, pour tout $i < j < m$, on réalise la
-	division euclidienne de $a_{ij}$ par $a_{ii}$.\\
-	Si à la fin de la boucle il existe $j$ tel que
-	$a_{ij} < a_{ii}$, alors on recommence en permutant $C_j$ et $C_i$ et $a_{ij}$ devient notre nouveau pivot.\\
-	Ainsi, par la correction de l'algorithme d'Euclide, il existe un rang $N$ où tous les $a_{ij}$ avec $j> i$ sont tous nuls.
-	Ainsi la fonction \texttt{hermite\_aux} se termine. La fonction \texttt{hermite} étant seulement une boucle, elle se termine également.
+	La fonction \texttt{hermite\_aux} se repose sur l'algorithme \\d'euclide. En effet, pour
+	tout $i < j < m$, on réalise la	division euclidienne de $a_{ij}$ par $a_{ii}$.\\
+	Si à la fin de la boucle il existe $j$ tel que $a_{ij} < a_{ii}$, alors on recommence
+	en permutant $C_j$ et $C_i$ et $a_{ij}$ devient	notre nouveau pivot.\\
+	Ainsi, par la correction de l'algorithme d'Euclide, il existe un rang $N$ où tous les
+	$a_{ij}$ avec $j> i$ sont tous nuls. Ainsi la fonction \texttt{hermite\_aux} se termine.
+	La fonction \texttt{hermite} étant	seulement une boucle, elle se termine également.
 	Donc l'algorithme se termine bien.
 
 	Montrons la correction de l'algorithme.	La fonction hermite\_aux se repose sur l'algorithme\\
 	d'Euclide en utilisant des opérations élémentaires sur les matrices.\\
-	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que pour tout $j > i$, $a_{ij} = 0$.\\
-	De plus, avant de retourner, on réalise la division euclidienne des $a_{ij}$ par $a_{ii}$ avec $0 < j < i$.\\
+	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que pour
+	tout $j > i$, $a_{ij} = 0$.\\
+	De plus, avant de retourner, on réalise la division euclidienne des $a_{ij}$ par
+	$a_{ii}$ avec $0 < j < i$.\\
 	Donc les $a_{ij}$ sont les restes des divisions euclidiennes et sont donc réduit au maximum.\\
 	On réalise ces opération sur toutes les lignes sans jamais revenir sur les lignes précédentes.
 	Enfin, on vérifie le signe de pivot et on change la colonne de signe si nécessaire.\\
@@ -335,9 +339,9 @@ Fonction hermite(A) :
 \begin{remark}
 	Il existe des algorithmes beaucoup plus efficace pour calculer la forme normale de Hermite comme
 	l'algorithme de de Domich \& Ai (1989) qui réalise les calculs modulo le déterminant de $A$ ou
-	l'algorithme de Micciancio-Warinshi. Cependant ces algorithmes étant plus ou moins compliqué, le choix ici
-	a été de faire nous même un algorithme à partir	de la méthode naïve employée lors du calcul de la forme normale de
-	Hermite à la main.
+	l'algorithme de Micciancio-Warinshi. Cependant ces algorithmes étant plus ou moins compliqué,
+	le choix ici a été de faire nous même un algorithme à partir de la méthode naïve employée
+	lors du calcul de la forme normale de Hermite à la main.
 \end{remark}
 \begin{definition}
 	Soient $A \in \M_{m,n}$, $B \in \M_{m,p}$ deux formes normales de Hermite
@@ -345,8 +349,8 @@ Fonction hermite(A) :
 		\text{ sont les mêmes que les colonnes non nulles de } B.$$
 \end{definition}
 Nous allons énoncer quelques résultats utiles des formes normales de Hermite.
-Tout d'abord, la proposition suivante nous permettra de réduire nos forme de matrices dont les colonnes
-génèrent un sous groupe de $\Z^2$
+Tout d'abord, la proposition suivante nous permettra de réduire nos forme de matrices dont les
+colonnes génèrent un sous groupe de $\Z^2$
 \begin{proposition}\label{ima_imh}
 	Soit $A \in \M_{m,n}(\Z)$ et soit $H$ sa forme normale d'Hermite. Alors,
 	$$\im A = \im H$$
@@ -414,8 +418,8 @@ de sous-groupe de $\ZZnZ$
 \section {Génération et énumération des sous-groupes}
 Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
 les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
-sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_chinois} que nous pouvons nous
-restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
+sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_chinois} que nous
+pouvons nous restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
 Ainsi dans cette section, nous supposerons que $n = p^m$.
 
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -465,8 +469,8 @@ $$
 	Montrons tout d'abord que ces matrices sont les seules qui génèrent les sous-groupe de $\ZZ$.\\
 	Supposons qu'il existe $H,H'$ deux formes normales de Hermite qui génèrent $G$ un sous-groupe
 	de $\ZZ$. Alors, on a $\im H = \im H'$ et par la proposition \ref{ha_hb_ssi_ima_imb}, $H = H'$.\\
-	Nous pouvons donc créer une classe d'équivalence pour la relation $\sim$ où la matrice de hermite
-	est la représentante de ces classes.\\
+	Nous pouvons donc créer une classe d'équivalence pour la relation $\sim$ où la matrice
+	de hermite est la représentante de ces classes.\\
 	Montrons désormais l'existence de telles matrices.\\
 	Soit
 	$H = \begin{pmatrix}
@@ -497,7 +501,8 @@ $$
 			\alpha & 0      & p^m & 0   \\
 			\beta  & \gamma & 0   & p^m
 		\end{pmatrix}
-		\overset{C_3 \leftarrow C_3 -p^{m-a}C_1 }{\overset{ C_4 \leftarrow C_4 -p^{m-b}C_2}{\longrightarrow}}
+		\overset{C_3 \leftarrow C_3 -p^{m-a}C_1 }%
+		{\overset{ C_4 \leftarrow C_4 -p^{m-b}C_2}{\longrightarrow}}
 		\begin{pmatrix}
 			\alpha & 0      & 0             & 0 \\
 			\beta  & \gamma & -p^{m-a}\beta & 0
@@ -596,7 +601,7 @@ $$
 
 \begin{example}[Cas pour $n = 2$]
 	On a $n = 2 = 2^1$ donc $m = 1$.\\
-	Calculons les matrices appartenant à $M_0 = \Set*{
+	Calculons les matrices appartenant à $$M_0 = \Set*{
 			\begin{pmatrix}
 				p^a & 0   \\
 				j   & p^b
@@ -606,7 +611,7 @@ $$
 				 & (a, b) \in A_0  \\
 				 & 0 \le j < p^{b}
 			\end{aligned}
-		}$\\
+		}$$
 	On a $A_0 = \Set*{(a,b)}{a + b \le 1} = \set{(0,0), (0,1), (1, 0)}$.
 	Ainsi
 	\begin{equation*}
@@ -614,21 +619,22 @@ $$
 			\matsqr{1}{0}{0}{1}, \matsqr{1}{0}{0}{2}, \matsqr{1}{0}{1}{2}, \matsqr{2}{0}{0}{1}
 		}
 	\end{equation*}
-	Calculons les matrices appartenant à $M_1 = \Set*{
+	Calculons les matrices appartenant à $$M_1 = \Set*{
 			\matsqr{2^a}{0}{2j}{2^b}
 		}{
 			\begin{aligned}
 				 & (a, b) \in A_1      \\
 				 & 0 \le j < 2^{b - 1}
 			\end{aligned}
-		}$.\\
-	On a $A_1 = \Set*{
+		}$$
+	On a $$A_1 = \Set*{
 			(a,b)}{
 			\begin{aligned}
 				 & a \le 1, b \le 1 \\
 				 & a + b = 2
 			\end{aligned}
-		} = \set{(1,1)}$. Ainsi
+		} = \set{(1,1)}$$
+	Ainsi
 	$$M_0 = \set{\matsqr{2}{0}{0}{2}}$$
 	Par la proposition \ref{pi_imh}, nous pouvons réaliser la correspondances entre
 	les matrices obtenues et les sous-groupes de $\ZZ$. Nous avons donc
@@ -661,7 +667,7 @@ Grâce aux résultat démontrés dans la section précédente, nous pouvons donc
 sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \begin{theorem}
 	Soit
-	\app{\psi}{\N^2}{\N}{(p,n)}{\sum_{i=0}^{n}(n-i)p^i + \sum_{i = 0}^{n - 1}\frac{1- p^{n-i+1}}{1 - p}}
+	\app{\psi}{\N^2}{\N}{(p,n)}{\sum_{i=0}^{n}(n-i)p^i + \sum_{i = 0}^{n}\frac{1- p^{n-i+1}}{1 - p}}
 	Alors, le nombre de sous groupe de $\ZZpm$ est $\psi(p,m)$
 \end{theorem}
 
@@ -671,12 +677,8 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	Ainsi,
 	$$| M | = |\ZZpm|$$
 	De plus,
-	\begin{equation*}
-		\begin{split}
-			|M| &= |\sum_{k=0}^{m} M_k|\\
-				&= \sum_{k=0}^{m}|M_k|
-		\end{split}
-	\end{equation*}
+	$$|M| = |\sum_{k=0}^{m} M_k| = \sum_{k=0}^{m}|M_k|$$
+	\indent
 	Calculons donc le cardinal de $M_0$ dans un premier temps, puis nous calculerons
 	le cardinal de $M_k$ pour $1 < k < m$.\\\vspace*{1cm}\\
 	On a $$M_0 =\Mz \text{ avec } A_0 = \Az$$
@@ -686,14 +688,61 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	\\\vspace*{1cm}\\
 	Calculons maintenant le cardinal des $M_k$. On a
 	$$M_k = \Mk \text{ avec } A_k = \Ak$$
-	
+	Tout d'abord, pour tout couple $(a,b) \in A_k$, il y a $p^{ b-k}$ matrices différentes.\\
+	De plus, pour tout ($a,b) \in A_k$, nous avons
+	$a + b = m + k \implies b = m - a +k$. De cela, nous en déduisons
+	\begin{equation*}
+		\begin{aligned}
+			         & 0 \le m - a + k \le m                           \\
+			\implies & 0\le m - a \le m - k \text{ car } 0 \le a \le m
+		\end{aligned}
+	\end{equation*}
+	D'où posant $j = m - a$, nous avons
+	\begin{equation*}
+		\begin{split}
+			|M_k| &= \sum_{j}^{m - k}p^{b-k}\\
+			&= \sum_{j}^{m - k}p^{m - a + k - k}\\
+			&= \sum_{j}^{m - k}p^{j}\\
+			&= \frac{1 - p^{m-k+1}}{1-p}
+		\end{split}
+	\end{equation*}
+	Ainsi, en remplaçant $k$ par $i$, nous en déduisons le cardinal de $M$:
+	\begin{equation*}
+		\begin{split}
+			|M \backslash M_0| &= \sum_{i=1}^{m}|M_i|\\
+			&= \sum_{i=0}^{m}\frac{1 - p^{m-i+1}}{1-p}
+		\end{split}
+	\end{equation*}
+	D'où
+	$$|M| = \sum_{i=0}^{n}(m-i)p^i + \sum_{i = 0}^{m}\frac{1- p^{m-i+1}}{1 - p}$$
+	Enfin, il ne nous reste plus qu'à poser
+	\app{\psi}{\N^2}{\N}{(p,n)}{\sum_{i=0}^{n}(n-i)p^i +%
+	\sum_{i = 0}^{n}\frac{1- p^{n-i+1}}{1 - p}}
 \end{proof}
-
+\newpage
 \begin{proposition}
 	Soit $n = \prod\limits_{i = 0}^k p_i^{\alpha_i}$.\\
 	Le nombre total de sous-groupes de $\ZZ$ est
-		$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)$$
+	$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)
+	= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
+	\sum_{l = 0}^{\alpha_i}\frac{1- p_i^{\alpha_i-l+1}}{1 - p_i}\mlarge[3])$$
 \end{proposition}
+
+\begin{proof}
+	Nous avons montré dans la section \ref{theoreme_chinois} que
+	$$(\ZZ) \isom \prod_i^k(\Z/p_i^{\alpha_i}\Z)^2$$
+	Par le théorème précédent, $|(\Z/p_i^{\alpha_i}\Z)^2| = \psi(p_i, \alpha_i)$.\\
+	Ainsi,
+	\begin{equation*}
+		\begin{split}
+			|\ZZ| &= |\prod_i^k(\Z/p_i^{\alpha_i}\Z)^2|\\
+			&= \prod_i^k|(\Z/p_i^{\alpha_i}\Z)^2|\\
+			&= \prod_i^k\psi(p_i,\alpha_i)\\
+			&= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
+			\sum_{l = 0}^{\alpha_i}\frac{1- p_i^{\alpha_i-l+1}}{1 - p_i}\mlarge[3])
+		\end{split}
+	\end{equation*}
+\end{proof}
 %preuve sur le calcul du nombre de sous-groupe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -724,7 +773,8 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	\item[[\,2\!\!]] \textbf{TODO livre algo}
 	\item[[\,3\!\!]] PERNET Clément, \textit{Calcul de formes normales matricielles: de
 		      l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
-	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices}, $2^e$ édition.\\
+	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices},
+	$2^e$ édition.\\
 	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
 \end{document}
