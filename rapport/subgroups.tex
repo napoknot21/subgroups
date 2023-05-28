@@ -135,20 +135,20 @@ sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en pa
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
 et $m \in \N$. En effet la proposition suivante nous garantit que le résultat est isomorphe
 \begin{proposition}
-	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$, avec $p_i$ des nombres premiers, alors
-	$$(\ZZ) \isom \prod_i^k(\Z/p_i^{\alpha_i}\Z)^2$$
+	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$, avec $p_i$ des nombres premiers, alors
+	$$(\ZZ) \isom \prod_{i = 1}^k(\Z/p_i^{\alpha_i}\Z)^2$$
 \end{proposition}
 
 \begin{proof}
-	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$. Par le théorème des restes chinois, nous avons
-	$$ \ZnZ \isom (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)$$
+	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$. Par le théorème des restes chinois, nous avons
+	$$ \ZnZ \isom (\Z/p_1^{\alpha_1}\Z) \x \cdots \x (\Z/p_k^{\alpha_k}\Z)$$
 	En particulier,
 	\begin{equation*}
 		\begin{split}
 			\ZZ & \isom
-			(\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z) \x (\Z/p_i^{\alpha_i}\Z)%
-			\x \cdots \x (\Z/p_i^{\alpha_i}\Z)\\
-			& \isom (\Z/p_i^{\alpha_i}\Z)^2 \x \cdots \x (\Z/p_i^{\alpha_i}\Z)^2
+			(\Z/p_1^{\alpha_1}\Z) \x \cdots \x (\Z/p_k^{\alpha_k}\Z) \x (\Z/p_1^{\alpha_1}\Z)%
+			\x \cdots \x (\Z/p_k^{\alpha_ik}\Z)\\
+			& \isom (\Z/p_1^{\alpha_1}\Z)^2 \x \cdots \x (\Z/p_k^{\alpha_k}\Z)^2
 		\end{split}
 	\end{equation*}
 \end{proof}
@@ -372,7 +372,7 @@ Ainsi les colonnes de la forme normale de Hermite $H$ d'une matrice $A$ génère
 sous-groupe que les colonnes de $A$.\\
 Nous n'avons donc plus qu'à trouver des matrices de la forme
 $H = \matsqr{a}{0}{b}{c}$ telle que
-$$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
+$$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{\bar b},\vectcolsqr{\bar 0}{\bar c}}$$
 
 \begin{proposition}\label{ha_hb_ssi_ima_imb}
 	Soient $A,B \in \M_{m,n}(\Z)$.\\
@@ -735,7 +735,7 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \end{proof}
 
 \begin{proposition}
-	Soit $n = \prod\limits_{i = 0}^k p_i^{\alpha_i}$.\\
+	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$.\\
 	Le nombre total de sous-groupes de $\ZZ$ est
 	$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)
 		= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
