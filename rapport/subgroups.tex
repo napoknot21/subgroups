@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[T1]{fontenc}
 \usepackage{mathtools}
@@ -11,7 +11,8 @@
 \usepackage{irif}
 \usepackage{listings}
 \usepackage{listingsutf8}
-
+\hyphenpenalty 10000
+\exhyphenpenalty 10000
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -103,25 +104,26 @@
 
 \begin{document}
 \includepdf{title.pdf}
+\pagenumbering{arabic}
 \hfill
+\thispagestyle{empty}
 \newpage
 \tableofcontents
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Introduction}
 Il est très facile de décrire tous les sous-groupes d'un groupe cyclique
 d'ordre $n$ : il y en a exactement un par diviseur positif de $n$.
 Pourtant, étonnamment, décrire tous les sous-groupes d'un groupe abélien
-est en général un problème difficile.\\
-Dans ce projet, nous nous se proposons de considérer cette question pour le groupe $\ZZ$ qui,
-de nos jour n'a pas l'air d'avoir été traitée.
+est en général un problème difficile.
+Dans ce projet, nous nous proposons de considérer cette question pour le groupe $\ZZ$ qui,
+de nos jours n'a pas l'air d'avoir été traitée.
 
-D'un point de vue théorique, nous mettrons en avant la générations et la caractérisations de \\
-sous-groupes grâce aux vecteurs colonne des matrices à coefficients entier et en particulier
+D'un point de vue théorique, nous mettrons en avant la génération et la
+caractérisation des sous-groupes grâce aux vecteurs colonnes des matrices à coefficients entier et en particulier
 aux formes normales de Hermite. Nous montrerons aussi une formule permettant de les compter.
 
-D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les\\
+D'un point de vue pratique, nous créerons un programme \textsc{OCaml} capable de générer les
 sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en paramètres.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,14 +133,14 @@ sous-groupes de $\ZZ$ ainsi que leur treillis à partir d'un entier donné en pa
 \subsection{Décomposition de $n$ en éléments irréductibles}\label{theoreme_chinois}
 
 Nous pouvons tout d'abord simplifier le problème aux cas où $n = p^m$ avec $p$ un nombre premier
-et $m \in \N$. En effet la proposition suivante nous garantie que le résultat est isomorphe
+et $m \in \N$. En effet la proposition suivante nous garantit que le résultat est isomorphe
 \begin{proposition}
 	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$, avec $p_i$ des nombres premiers, alors
 	$$(\ZZ) \isom \prod_i^k(\Z/p_i^{\alpha_i}\Z)^2$$
 \end{proposition}
 
 \begin{proof}
-	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$. Par le théorème des restes chinois, on a
+	Soit $n = \prod\limits_i^k p_i^{\alpha_i}$. Par le théorème des restes chinois, nous avons
 	$$ \ZnZ \isom (\Z/p_i^{\alpha_i}\Z) \x \cdots \x (\Z/p_i^{\alpha_i}\Z)$$
 	En particulier,
 	\begin{equation*}
@@ -151,8 +153,8 @@ et $m \in \N$. En effet la proposition suivante nous garantie que le résultat e
 	\end{equation*}
 \end{proof}
 
-En pratique, pour décomposer en entier en facteurs irréductibles, nous avons utilisé la procédure de
-\textsc{$\rho$-Pollard} pour obtenir un diviseur de $n$:
+En pratique, pour décomposer en entier en facteurs irréductibles, nous avons utilisé\\
+la procédure de \textsc{$\rho$-Pollard} pour obtenir un diviseur de $n$:
 \begin{lstlisting}
 fonction rho_pollard P n x y k i d
     Si d <> 1:
@@ -161,7 +163,7 @@ fonction rho_pollard P n x y k i d
         x = P(x) mod n
         d = pgcd(|y - x|, n)
         Si i = k:
-            Alors Retourne rho_pollard loop P n x x 2k (i + 1) d
+            Alors, Retourne rho_pollard loop P n x x 2k (i + 1) d
         Sinon Retourne rho_pollard P n x y k (i + 1) d
 \end{lstlisting}
 Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.\\
@@ -177,7 +179,7 @@ Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 \end{proposition}
 \begin{proof}
 	Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
-	$\varphi$ est surjective par définition de la classe d'équivalence de a et b.
+	$\varphi$ est surjectif par définition de la classe d'équivalence de a et b.
 	Montrons que $\ker \varphi = n\Z \x n\Z$.
 
 	\begin{equation*}
@@ -190,7 +192,7 @@ Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 			&\text{ssi } (a,b) \in  n\Z \x n\Z
 		\end{split}
 	\end{equation*}
-	Ainsi par le premier théorème d'isomorphisme, on a
+	Ainsi par le premier théorème d'isomorphisme, nous avons
 	$$\Z^2/n\Z \x n\Z \isom \ZZ $$
 \end{proof}
 Ainsi le problème se résout à trouver les sous-groupes $G$ de $\Z^2$ tels que
@@ -204,7 +206,7 @@ $n\Z \x n\Z \subseteq G = \gen{\vectcolsqr{\bar a}{\bar b}, \vectcolsqr{\bar c}{
 Nous avons vu dans la section précédente qu'il était possible de caractériser les sous-groupe de
 $\ZZ$ par une matrice $H = \matsqr{a}{c}{b}{d}$. Cependant, ces matrices ne sont pas uniques. C'est
 pourquoi, nous allons utiliser les formes normales d'Hermite.
-Énonçons d'abord une proposition sur les matrices à coefficients entier qui nous sera forte
+Énonçons d'abord une proposition sur les matrices à coefficients entier qui nous sera fort
 utile par la suite.
 
 %- - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -220,7 +222,7 @@ utile par la suite.
 		\implies & y = A(Qx)   \\
 		\implies & y \in \im A
 	\end{align*}
-	Donc $\im AQ \subseteq \im A$.
+	Donc, $\im AQ \subseteq \im A$.
 	Soit $y \in \im A$. Il existe $x \in \Z^n$ tel que $y = Ax$.\\
 	Cherchons $z \in \Z^n$ tel que $y = Ax = AQz$
 	\begin{align*}
@@ -229,7 +231,7 @@ utile par la suite.
 		\implies & x = Qz                                       \\
 		\implies & \inv Q x = z \text{ (car $Q \in \GL_n(\Z)$)}
 	\end{align*}
-	Donc il existe bien un $z \in \Z^n$ tel que $ABz = y$. Donc $y \in \im AQ$.\\
+	Donc, il existe bien un $z \in \Z^n$ tel que $ABz = y$. Donc, $y \in \im AQ$.\\
 	D'où $\im AQ = \im A$
 
 \end{proof}
@@ -239,13 +241,14 @@ utile par la suite.
 \subsection{Formes normales de Hermite}
 Nous allons désormais énoncer la définition de la forme normale de Hermite.
 \begin{definition}
-	Soit $A \in \M_{m,n}(\Z)$. Alors il existe une unique matrice échelonnée
+	Soit $A \in \M_{m,n}(\Z)$. Alors, il existe une unique matrice échelonnée
 	réduite suivant les colonnes $H \in \M_{m,n}(\Z)$ telle qu'il existe $Q \in \GL_n(\Z)$
 	avec $H = AQ$. La matrice $H$ s'appelle la forme normale de Hermite de A.
 \end{definition}
 
 \begin{proof}
-	Nous supposerons l'unicité admise, l'algorithme suivant nous montre son existence.
+	Nous admettons l'unicité.\\
+	L'algorithme suivant nous montre son existence.
 	\begin{lstlisting}
 Fonction hermite_aux($A$, $i$):
 	Pour chaque $j$ allant de $i$ à $m$ :
@@ -276,26 +279,28 @@ Fonction hermite(A) :
 
 
 \end{lstlisting}
-
-	Montrons la terminaison de l'algorithme.
-	La fonction \texttt{hermite\_aux} se repose sur l'algorithme \\d'euclide. En effet, pour
-	tout $i < j < m$, on réalise la	division euclidienne de $a_{ij}$ par $a_{ii}$.\\
-	Si à la fin de la boucle il existe $j$ tel que $a_{ij} < a_{ii}$, alors on recommence
+	\newpage\noindent
+	Montrons la terminaison de l'algorithme.\\
+	La fonction \texttt{hermite\_aux} se repose sur l'algorithme d'Euclide.\\
+	En effet, pour tout $i < j < m$, nous réalisons la division euclidienne de $a_{ij}$ par $a_{ii}$.\\
+	Si à la fin de la boucle il existe $j$ tel que $a_{ij} < a_{ii}$, alors nous recommençons
 	en permutant $C_j$ et $C_i$ et $a_{ij}$ devient	notre nouveau pivot.\\
 	Ainsi, par la correction de l'algorithme d'Euclide, il existe un rang $N$ où tous les
 	$a_{ij}$ avec $j> i$ sont tous nuls. Ainsi la fonction \texttt{hermite\_aux} se termine.
 	La fonction \texttt{hermite} étant	seulement une boucle, elle se termine également.
-	Donc l'algorithme se termine bien.
+	Donc, l'algorithme se termine bien.\\
 
-	Montrons la correction de l'algorithme.	La fonction hermite\_aux se repose sur l'algorithme\\
-	d'Euclide en utilisant des opérations élémentaires sur les matrices.\\
+	\noindent
+	Montrons la correction de l'algorithme.\\
+	La fonction hermite\_aux se repose sur l'algorithme
+	d'Euclide en utilisant des opérations élémentaires sur les matrices.
 	Par la correction de l'algorithme d'Euclide, nous pouvons en déduire que pour
 	tout $j > i$, $a_{ij} = 0$.\\
-	De plus, avant de retourner, on réalise la division euclidienne des $a_{ij}$ par
+	De plus, avant de retourner, nous réalisons la division euclidienne des $a_{ij}$ par
 	$a_{ii}$ avec $0 < j < i$.\\
-	Donc les $a_{ij}$ sont les restes des divisions euclidiennes et sont donc réduit au maximum.\\
-	On réalise ces opération sur toutes les lignes sans jamais revenir sur les lignes précédentes.
-	Enfin, on vérifie le signe de pivot et on change la colonne de signe si nécessaire.\\
+	Donc, les $a_{ij}$ sont les restes des divisions euclidiennes et sont donc réduit au maximum.\\
+	Nous réalisons ces opération sur toutes les lignes sans jamais revenir sur les lignes précédentes.
+	Enfin, nous vérifions le signe de pivot et nous changeons la colonne de signe si nécessaire.\\
 	Ainsi la matrice obtenue est bien échelonnée réduite,
 	il s'agit donc d'une forme normale de Hermite, ce qui prouve donc son existence.
 
@@ -339,18 +344,20 @@ Fonction hermite(A) :
 \begin{remark}
 	Il existe des algorithmes beaucoup plus efficace pour calculer la forme normale de Hermite comme
 	l'algorithme de de Domich \& Ai (1989) qui réalise les calculs modulo le déterminant de $A$ ou
-	l'algorithme de Micciancio-Warinshi. Cependant ces algorithmes étant plus ou moins compliqué,
-	le choix ici a été de faire nous même un algorithme à partir de la méthode naïve employée
+	l'algorithme de Micciancio-Warinshi. Cependant, ces algorithmes étant plus ou moins compliqué,
+	le choix ici a été de faire nous-mêmes un algorithme à partir de la méthode naïve employée
 	lors du calcul de la forme normale de Hermite à la main.
 \end{remark}
+
+\newpage
 \begin{definition}
 	Soient $A \in \M_{m,n}$, $B \in \M_{m,p}$ deux formes normales de Hermite
 	$$A \sim B \text{ ssi les colonnes non nulles de } A
 		\text{ sont les mêmes que les colonnes non nulles de } B.$$
 \end{definition}
 Nous allons énoncer quelques résultats utiles des formes normales de Hermite.
-Tout d'abord, la proposition suivante nous permettra de réduire nos forme de matrices dont les
-colonnes génèrent un sous groupe de $\Z^2$
+Tout d'abord, la proposition suivante nous permet de nous restreindre à certaines matrices sous une forme particulière
+dont les colonnes génèrent un sous groupe de $\Z^2$
 \begin{proposition}\label{ima_imh}
 	Soit $A \in \M_{m,n}(\Z)$ et soit $H$ sa forme normale d'Hermite. Alors,
 	$$\im A = \im H$$
@@ -374,17 +381,18 @@ $$n\Z \x n\Z \subseteq \gen{\vectcolsqr{\bar a}{b},\vectcolsqr{0}{\bar c}}$$
 \end{proposition}
 
 \begin{proof}
-	Supposons que $H_A = H_B$.	Par la proposition \ref{ima_imh}, on a
+	Supposons que $H_A = H_B$.	Par la proposition \ref{ima_imh}, nous avons
 	$$\im A = \im H_A = \im H_B = \im B$$
-	Réciproquement, supposons que $\im A = \im B$. Par la proposition \ref{ima_imh}, on a
+	Réciproquement, supposons que $\im A = \im B$. Par la proposition \ref{ima_imh}, nous avons
 	$$\im A = \im H_A = \im H_B = \im B$$
-	Donc les vecteurs colonnes de $H_A$ qui génèrent $\im H_A$ sont les mêmes que ceux de
+	Donc, les vecteurs colonnes de $H_A$ qui génèrent $\im H_A$ sont les mêmes que ceux de
 	$H_B$ qui génèrent $\im H_B$, d'où $H_A = H_B$
 
 \end{proof}
 
-Cette proposition nous affirme donc qu'en traitant seulement
-les formes normales de Hermite, nous pourrons générer tous les sous-groupes de $\Z^2$
+\newpage
+Cette proposition nous affirme donc qu'en traitant seulement les formes normales de \\
+Hermite, nous pourrons générer tous les sous-groupes de $\Z^2$
 
 La proposition suivante, va nous être utile pour trouver la bonne forme des matrices de Hermite
 ainsi que la génération du treillis.
@@ -397,11 +405,12 @@ ainsi que la génération du treillis.
 \end{proposition}
 
 \begin{proof}
-	Supposerons que $G \cup H = G$. Alors $ H \subseteq G$.Donc
+	Supposerons que $G \cup H = G$. Alors, $ H \subseteq G$.Donc
 	$$\forall x \in H \cma  \ex y \in G \cma \ex \lambda \in \Z \cma x = \lambda y$$
 	En particulier la base de $H$ est une combinaison linéaire de la base de $G$. D'où
 	$$hermite(A | B) = (A | 0) \sim A$$
-	Réciproquement, soit $hermite(A | B) \sim A$. Alors par définition de la relation
+	\noindent
+	Réciproquement, soit $hermite(A | B) \sim A$. Alors, par définition de la relation
 	d'équivalence,\\
 	$hermite(A | B) = (A | 0)$. Ainsi les colonnes de B sont des combinaisons linéaire des
 	colonnes de $A$,\\
@@ -416,15 +425,16 @@ de sous-groupe de $\ZZnZ$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section {Génération et énumération des sous-groupes}
-Nous allons voir dans cette section la forme des matrices dont les vecteurs colonne génèrent
+Nous allons voir dans cette section la forme des matrices dont les vecteurs colonnes génèrent
 les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
-sur leurs caractéristiques. Nous avons montré dans la section \ref{theoreme_chinois} que nous
+sur leurs caractéristiques. Nous avons montré dans\\
+la section \ref{theoreme_chinois} que nous
 pouvons nous restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
 Ainsi dans cette section, nous supposerons que $n = p^m$.
 
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{Génération des sous-groupes}
-Commençons tout d'abord par montrer la forme des matrices dont les vecteurs colonne génèrent
+Commençons tout d'abord par montrer la forme des matrices dont les vecteurs colonnes génèrent
 les sous-groupes de $\ZZpmZ$. Dans la section \ref{simp_ss_gr}, nous avons montré que les
 sous-groupes de $\Z^2$ recherché sont les sous groupes $G$ tels que
 $\pmZpmZ \subseteq G$, \cad
@@ -468,16 +478,18 @@ $$
 \begin{proof}
 	Montrons tout d'abord que ces matrices sont les seules qui génèrent les sous-groupe de $\ZZ$.\\
 	Supposons qu'il existe $H,H'$ deux formes normales de Hermite qui génèrent $G$ un sous-groupe
-	de $\ZZ$. Alors, on a $\im H = \im H'$ et par la proposition \ref{ha_hb_ssi_ima_imb}, $H = H'$.\\
-	Nous pouvons donc créer une classe d'équivalence pour la relation $\sim$ où la matrice
+	de $\ZZ$. Alors, nous avons $\im H = \im H'$ et par la proposition \ref{ha_hb_ssi_ima_imb}, $H = H'$.\\
+	Nous pouvons donc créer une classe d'équivalence pour la relation $\sim$ où la forme normale
 	de hermite est la représentante de ces classes.\\
+	\newpage
+	\noindent
 	Montrons désormais l'existence de telles matrices.\\
 	Soit
 	$H = \begin{pmatrix}
 			a & 0 \\
 			b & c
 		\end{pmatrix}$
-	On cherche à réaliser des operations élémentaires telles que
+	Nous cherchons à réaliser des opérations élémentaires telles que
 	\begin{equation*}
 		A = \begin{pmatrix}
 			\alpha & 0      & p^m & 0   \\
@@ -515,14 +527,14 @@ $$
 		\item Si $a + b \le m$, alors $b \le m - a$ et $\divided{p^b}{p^{m-a}}$ et
 		      donc $\divided{p^b}{\beta p^{m-a}}$.\\
 		\item Sinon $m \le a + b \le 2m \implies 0 \le a + b -m \le n$.\\
-		      On pose $k = a + b -m$ et on a donc $0 \le k \le m$.\\
-		      On pose $\beta = ip^k$ avec $0 \le i < p^{b - k}$. On a bien
+		      Nous posons $k = a + b -m$ et nous avons donc $0 \le k \le m$.\\
+		      Nous posons $\beta = ip^k$ avec $0 \le i < p^{b - k}$. Nous avons bien
 		      $\fa i \cma \beta = ip^k < p^b$.\\
-		      De plus $\divided{p^b}{ip^kp^{m-a}}$ car $\divided{p^b}{p^kp^{m-a}}$
-		      car $b = k + m - a$
+		      De plus, $\divided{p^b}{ip^kp^{m-a}}$ car  $\divided{p^b}{p^kp^{m-a}}$
+		      car  $b = k + m - a$
 	\end{itemize}
 	Ainsi, dans les deux cas, nous pouvons annuler $a_{2\,3}$ et nous obtenons bien la matrice
-	suivante en faisant l'operations élémentaire.
+	suivante en faisant l'opérations élémentaire.
 	$\begin{pmatrix}
 			\alpha & 0      & 0 & 0 \\
 			\beta  & \gamma & 0 & 0
@@ -588,7 +600,7 @@ $$
 		}
 	\end{equation*}
 \end{corollary}
-\newpage
+
 \begin{proposition}\label{pi_imh}
 	Soit $\sapp{\pi}{\Z^2}{\ZZnZ}$ et soit $H \in \M_2$ une matrice de Hermite de la forme
 	$ H = \matsqr{\alpha}{0}{\beta}{\gamma}$.
@@ -599,8 +611,9 @@ $$
 	(admise ?)
 \end{proof}
 
+\newpage
 \begin{example}[Cas pour $n = 2$]
-	On a $n = 2 = 2^1$ donc $m = 1$.\\
+	Nous avons $n = 2 = 2^1$ donc $m = 1$.\\
 	Calculons les matrices appartenant à $$M_0 = \Set*{
 			\begin{pmatrix}
 				p^a & 0   \\
@@ -612,7 +625,7 @@ $$
 				 & 0 \le j < p^{b}
 			\end{aligned}
 		}$$
-	On a $A_0 = \Set*{(a,b)}{a + b \le 1} = \set{(0,0), (0,1), (1, 0)}$.
+	Nous avons $A_0 = \Set*{(a,b)}{a + b \le 1} = \set{(0,0), (0,1), (1, 0)}$.
 	Ainsi
 	\begin{equation*}
 		M_0 = \set{
@@ -627,7 +640,7 @@ $$
 				 & 0 \le j < 2^{b - 1}
 			\end{aligned}
 		}$$
-	On a $$A_1 = \Set*{
+	Nous avons $$A_1 = \Set*{
 			(a,b)}{
 			\begin{aligned}
 				 & a \le 1, b \le 1 \\
@@ -649,6 +662,7 @@ $$
 	\end{equation*}
 \end{example}
 
+\newpage
 \begin{proposition}
 	soit $H = \matsqr{\alpha}{0}{\beta}{\gamma}$ une forme normale d'Hermite. Alors
 	$$\left\lvert Z^2/\im H \right\rvert = \det(H) = \alpha\beta$$
@@ -663,7 +677,7 @@ $$
 \end{remark}
 %- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
 \subsection{Énumération des sous-groupes}
-Grâce aux résultat démontrés dans la section précédente, nous pouvons donc énumérer les\\
+Grâce aux résultats démontrés dans la section précédente, nous pouvons donc énumérer les\\
 sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \begin{theorem}
 	Soit
@@ -672,7 +686,7 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \end{theorem}
 
 \begin{proof}
-	Par le corollaire \ref{union_m}, on sait que M = $\bigsqcup\limits_{k = 0}^{m} M_k$
+	Par le corollaire \ref{union_m}, nous savons que M = $\bigsqcup\limits_{k = 0}^{m} M_k$
 	est l'ensemble des matrices dont les colonnes engendrent les sous-groupes de $\ZZpm$.
 	Ainsi,
 	$$| M | = |\ZZpm|$$
@@ -681,20 +695,20 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	\indent
 	Calculons donc le cardinal de $M_0$ dans un premier temps, puis nous calculerons
 	le cardinal de $M_k$ pour $1 < k < m$.\\\vspace*{1cm}\\
-	On a $$M_0 =\Mz \text{ avec } A_0 = \Az$$
-	Or, pour chaque couple $(a,b) \in A_0$, on $p^b$ matrices différentes.
-	De plus, $a \le m - b$. Donc en remplaçant $b$ par $i$, on obtient
+	Nous avons $$M_0 =\Mz \text{ avec } A_0 = \Az$$
+	Or, pour chaque couple $(a,b) \in A_0$, nous avons $p^b$ matrices différentes.
+	De plus, $a \le m - b$. Donc, en remplaçant $b$ par $i$, nous obtenons
 	$$ |M_0| = \sum_{i=0}^{m}(m-i)p^i$$
 	\\\vspace*{1cm}\\
-	Calculons maintenant le cardinal des $M_k$. On a
+	Calculons maintenant le cardinal des $M_k$. Nous avons
 	$$M_k = \Mk \text{ avec } A_k = \Ak$$
 	Tout d'abord, pour tout couple $(a,b) \in A_k$, il y a $p^{ b-k}$ matrices différentes.\\
 	De plus, pour tout ($a,b) \in A_k$, nous avons
 	$a + b = m + k \implies b = m - a +k$. De cela, nous en déduisons
 	\begin{equation*}
 		\begin{aligned}
-			         & 0 \le m - a + k \le m                           \\
-			\implies & 0\le m - a \le m - k \text{ car } 0 \le a \le m
+			         & 0 \le m - a + k \le m                             \\
+			\implies & 0\le m - a \le m - k \text{, car  } 0 \le a \le m
 		\end{aligned}
 	\end{equation*}
 	D'où posant $j = m - a$, nous avons
@@ -717,15 +731,15 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	$$|M| = \sum_{i=0}^{n}(m-i)p^i + \sum_{i = 0}^{m}\frac{1- p^{m-i+1}}{1 - p}$$
 	Enfin, il ne nous reste plus qu'à poser
 	\app{\psi}{\N^2}{\N}{(p,n)}{\sum_{i=0}^{n}(n-i)p^i +%
-	\sum_{i = 0}^{n}\frac{1- p^{n-i+1}}{1 - p}}
+		\sum_{i = 0}^{n}\frac{1- p^{n-i+1}}{1 - p}}
 \end{proof}
-\newpage
+
 \begin{proposition}
 	Soit $n = \prod\limits_{i = 0}^k p_i^{\alpha_i}$.\\
 	Le nombre total de sous-groupes de $\ZZ$ est
 	$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)
-	= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
-	\sum_{l = 0}^{\alpha_i}\frac{1- p_i^{\alpha_i-l+1}}{1 - p_i}\mlarge[3])$$
+		= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
+		\sum_{l = 0}^{\alpha_i}\frac{1- p_i^{\alpha_i-l+1}}{1 - p_i}\mlarge[3])$$
 \end{proposition}
 
 \begin{proof}
@@ -774,7 +788,7 @@ sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	\item[[\,3\!\!]] PERNET Clément, \textit{Calcul de formes normales matricielles: de
 		      l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
 	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices},
-	$2^e$ édition.\\
+	      $2^e$ édition.\\
 	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
 \end{document}
