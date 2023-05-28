@@ -18,3 +18,4 @@ val bezout : int -> int -> int * int
 (*Give the modular exponentiation as (a**b) % c*)
 val binpow : int -> int -> int -> int
 val fold_prime : int list -> int list
+val fold_prime_couple : int list -> (int * int) list

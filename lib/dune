@@ -1,6 +1,3 @@
 (library
  (name subgroups)
-  (modules
- Prime
- Matrix
- Groups))
+ (modules Prime Matrix Groups Formula Lib))

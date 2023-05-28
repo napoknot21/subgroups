@@ -65,7 +65,8 @@ let is_prime n =
     | t ->
         if mira_witness (1 + Random.int (n - 1)) n then false else loop (t - 1)
   in
-  loop threshold
+  if n <= 1 then false
+  else loop threshold
 
 let fold_prime l =
   let rec loop res l last =
@@ -75,6 +76,17 @@ let fold_prime l =
     | [], x :: l -> loop [ x ] l x
     | (a :: r as r'), b :: l ->
         if last = b then loop ((a * b) :: r) l b else loop (b :: r') l b
+  in
+  List.sort compare (loop [] l 0)
+
+ let fold_prime_couple l =
+  let rec loop res l last =
+    match (res, l) with
+    | [], [] -> []
+    | _ :: _, [] -> res
+    | [], x :: l -> loop [ (x,1) ] l x
+    | ((p,n) :: r as r'), b :: l ->
+        if last = b then loop ((p, n+1) :: r) l b else loop ((b,1) :: r') l b
   in
   List.sort compare (loop [] l 0)
 
@@ -88,4 +100,4 @@ let rec factorise n =
           let d = pollard_rho pol n in
           loop (List.rev_append (factorise d) l) (n / d)
   in
-  if is_prime n then [ n ] else List.sort compare (loop [] n)
+  if n <= 1 || is_prime n then [ n ] else List.sort compare (loop [] n)

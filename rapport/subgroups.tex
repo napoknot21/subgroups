@@ -231,7 +231,7 @@ utile par la suite.
 		\implies & x = Qz                                       \\
 		\implies & \inv Q x = z \text{ (car $Q \in \GL_n(\Z)$)}
 	\end{align*}
-	Donc, il existe bien un $z \in \Z^n$ tel que $ABz = y$. Donc, $y \in \im AQ$.\\
+	Donc, il existe bien un $z \in \Z^n$ tel que $AQz = y$. Donc, $y \in \im AQ$.\\
 	D'où $\im AQ = \im A$
 
 \end{proof}
@@ -735,7 +735,7 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \end{proof}
 
 \begin{proposition}
-	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$.\\
+	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$ avec $p_i$ des nombres premiers distincts\\
 	Le nombre total de sous-groupes de $\ZZ$ est
 	$$\prod_{i = 0}^{k} \psi(p_i,\alpha_i)
 		= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
@@ -757,6 +757,15 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 		\end{split}
 	\end{equation*}
 \end{proof}
+
+\begin{remark}
+	\hfill
+	\begin{itemize}
+		\item Si $n = 0$, alors $\ZZ \isom Z^2$ et il y a une infinité de sous-groupes.
+		\item Si $n = 1$, alors $\ZZ$ est le groupe trivial.
+	\end{itemize}
+
+\end{remark}
 %preuve sur le calcul du nombre de sous-groupe
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
