@@ -7,6 +7,7 @@ exception Invalid_dimension
 val id : int -> matrix
 val copy : matrix -> matrix
 val make : (int * int -> int) -> int -> int -> matrix
+val makesqr: int -> int -> int -> int -> matrix
 val size : matrix -> int * int
 val get : matrix -> int * int -> int
 val set : matrix -> int * int -> int -> unit
