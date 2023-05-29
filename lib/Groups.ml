@@ -5,10 +5,10 @@ open Lib
 type group = { generator : int * int; mat : matrix }
 
 
-let ord g = g.mat.(0).(0) * g.mat.(1).(1)
+let ord n g = (n*n)/(g.mat.(0).(0) * g.mat.(1).(1))
 
-let compare_ord g h =
-  Int.compare (ord g) (ord h)
+let compare_ord n g h =
+  Int.compare (ord n g) (ord n h)
 
 
 let generate_a_0 n =
@@ -44,9 +44,9 @@ let generate_m_k p n k =
 in loop [] a_k
 
 let matrix_to_groups pn m =
-let a,b = m.(0).(0) mod pn, m.(1).(0) mod pn
+let a = m.(0).(0) mod pn
 and d = m.(1).(1) mod pn in
-(a,b),(0,d)
+{generator = (a,d); mat = m}
 
 
 let generate_subgroups p n =
