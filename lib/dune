@@ -3,4 +3,5 @@
   (modules
  Prime
  Matrix
- Groups))
+ Groups
+ Lattice))

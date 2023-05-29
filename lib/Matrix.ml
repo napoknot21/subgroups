@@ -1,4 +1,4 @@
-(* Fucntion for matrix calculation *)
+(* Function for matrix calculation *)
 
 type matrix = int array array
 
@@ -200,11 +200,11 @@ let equals_not_null a b =
   Printf.printf "compare \n";
   List.compare cmp_vect la lb = 0
 
-let rec take n list =
+(* let rec take n list =
   if n <= 0 then []
   else match list with
   | [] -> []
-  | h :: t -> h :: take (n-1) t
+  | h :: t -> h :: take (n-1) t *)
 (*
 let rec generate_lattice hnf i j =
   if i > 10 then [] (* This will generate points from -10 to 10*)
