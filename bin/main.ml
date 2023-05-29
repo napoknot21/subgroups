@@ -5,12 +5,12 @@ open Subgroups.Lattice
 
 let test =
   let set = generate_subgroups 2 1 in
-  let lattice = make_lattice 2 set in
+  let lattice = make_lattice set in
   ()
 
 let () =
   let set = generate_subgroups 2 2 in
-  let lattice = make_lattice (2*2) set in
+  let lattice = make_lattice set in
   let file = open_out "output.dot" in
     to_dot lattice file;
   close_out file;
