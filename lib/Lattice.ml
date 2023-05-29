@@ -72,16 +72,53 @@ let make_lattice n set_list =
 
 
 (* TODO *)
-let to_dot n lat out =
-  let _ = n in
+let to_dot lat out =
+  let n = Array.length lat.set in
+  let matrix_to_string m =
+    let n, _ = Matrix.size m in
+    let rows = Array.init n (fun i ->
+      let row = m.(i) in
+      String.concat "," (List.map string_of_int (Array.to_list row))
+    ) in
+    "{ " ^ (String.concat " | " (Array.to_list rows)) ^ " }"
+  in
   let print_edge u v =
-    Printf.fprintf out "  %d -> %d;\n" u v
+    Printf.fprintf out "%d -> %d;\n" u v
   in
-  let print_node i =
-    Printf.fprintf out "  %d [label=\"%d\"];\n" i i
-  in
-  Printf.fprintf out "digraph {\n";
-  Array.iteri (fun i _ -> print_node i) lat.set;
-  Array.iteri (fun u vs -> List.iter (print_edge u) vs) lat.links;
+  Printf.fprintf out "digraph G {\n";
+  for i = 0 to n - 1 do
+    let g = lat.set.(i) in
+    Printf.fprintf out "%d [label=\"%s\"];\n" i (matrix_to_string g.mat);
+    List.iter (print_edge i) lat.links.(i)
+  done;
   Printf.fprintf out "}\n"
+
+  (*
+  let oc = open_out out in
+  let node_to_string (group: group) =
+    let matrix_to_string (mat: matrix) =
+      let string_rows = Array.map (fun row ->
+        let string_row = Array.map string_of_int row in
+        "(" ^ (String.concat ", " (Array.to_list string_row)) ^ ")"
+      ) mat in
+      "[ " ^ (String.concat "; " (Array.to_list string_rows)) ^ " ]"
+    in
+    matrix_to_string group.mat
+  in
+  let write_nodes oc =
+    Array.iteri (fun i group ->
+      Printf.fprintf oc "\t%d [label=\"%s\"];\n" i (node_to_string group)
+    ) lat.set
+  in
+  let write_edges oc =
+    Array.iteri (fun i node ->
+      List.iter (fun j -> Printf.fprintf oc "\t%d -> %d;\n" i j) node
+    ) lat.links
+  in
+  Printf.fprintf oc "digraph lattice {\n";
+  write_nodes oc;
+  write_edges oc;
+  Printf.fprintf oc "}\n";
+  close_out oc
+  *)
 

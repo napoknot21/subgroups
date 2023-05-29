@@ -12,7 +12,7 @@ let () =
   let set = generate_subgroups 2 2 in
   let lattice = make_lattice (2*2) set in
   let file = open_out "output.dot" in
-    to_dot 4 lattice file;
+    to_dot lattice file;
   close_out file;
   (* let file = open_out "output.txt" in
     for i = 0 to 5000 do
