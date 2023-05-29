@@ -116,8 +116,7 @@ Il est très facile de décrire tous les sous-groupes d'un groupe cyclique
 d'ordre $n$ : il y en a exactement un par diviseur positif de $n$.
 Pourtant, étonnamment, décrire tous les sous-groupes d'un groupe abélien
 est en général un problème difficile.
-Dans ce projet, nous nous proposons de considérer cette question pour le groupe $\ZZ$ qui,
-de nos jours n'a pas l'air d'avoir été traitée.
+Dans ce projet, nous nous proposons de considérer cette question pour le groupe $\ZZ$.
 
 D'un point de vue théorique, nous mettrons en avant la génération et la
 caractérisation des sous-groupes grâce aux vecteurs colonnes des matrices à coefficients entier et en particulier
@@ -688,8 +687,7 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \begin{proof}
 	Par le corollaire \ref{union_m}, nous savons que M = $\bigsqcup\limits_{k = 0}^{m} M_k$
 	est l'ensemble des matrices dont les colonnes engendrent les sous-groupes de $\ZZpm$.
-	Ainsi,
-	$$| M | = |\ZZpm|$$
+	Ainsi, le nombre de sous-groupes de $\ZZpm$ est $|M|$.
 	De plus,
 	$$|M| = |\sum_{k=0}^{m} M_k| = \sum_{k=0}^{m}|M_k|$$
 	\noindent
@@ -745,12 +743,13 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \begin{proof}
 	Nous avons montré dans la section \ref{theoreme_chinois} que
 	$$(\ZZ) \isom \prod_i^k(\Z/p_i^{\alpha_i}\Z)^2$$
-	Par le théorème précédent, $|(\Z/p_i^{\alpha_i}\Z)^2| = \psi(p_i, \alpha_i)$.\\
+	Par le théorème précédent, $|S((\Z/p_i^{\alpha_i}\Z)^2)| = \psi(p_i, \alpha_i)$ avec
+	$S((\Z/p_i^{\alpha_i}\Z)^2)$ l'ensemble des sous-groupes de $(\Z/p_i^{\alpha_i}\Z)^2$.\\
 	Ainsi,
 	\begin{equation*}
 		\begin{split}
-			|\ZZ| &= |\prod_i^k(\Z/p_i^{\alpha_i}\Z)^2|\\
-			&= \prod_i^k|(\Z/p_i^{\alpha_i}\Z)^2|\\
+			|S(\ZZ)| &= |S(\prod_i^k(\Z/p_i^{\alpha_i}\Z)^2)|\\
+			&= \prod_i^k|S((\Z/p_i^{\alpha_i}\Z)^2)\\
 			&= \prod_i^k\psi(p_i,\alpha_i)\\
 			&= \prod_i^k\mlarge[3](\sum_{l=0}^{\alpha_i}(\alpha_i-l)p_i^l +%
 			\sum_{l = 0}^{\alpha_i}\frac{1- p_i^{\alpha_i-l+1}}{1 - p_i}\mlarge[3])

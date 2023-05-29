@@ -10,6 +10,15 @@ let size m = (Array.length m, Array.length m.(0))
 let get m (i, j) = m.(i).(j)
 let set m (i, j) v = m.(i).(j) <- v
 
+let makesqr a b c d =
+  let f = function
+  |0,0 -> a
+  |1,0 -> b
+  |0,1 -> c
+  |1,1 -> d
+  |_,_ -> failwith "makesqr"
+in make f 2 2
+
 let copy mat =
   let n, m = size mat in
   make (fun (i, j) -> get mat (i, j)) n m
