@@ -64,7 +64,6 @@ let reduce (mat, t) li cj ck =
     if mat.(li).(ck) < 0 then change_sign (mat, t) ck else (mat, t)
   in
   let k = mat.(li).(cj) / mat.(li).(ck) in
-  Printf.printf "%d - %d*%d\n" cj k ck;
   let mat = assign_col mat cj (-k) ck in
   let t = assign_col t cj (-k) ck in
   (* Check and correct the sign of pivot *)
@@ -108,7 +107,6 @@ let min_index mat i =
 
 let permut_min (mat, t) i =
   let min = min_index mat i in
-  print_int min;
   (permut mat i min, permut t i min)
 
 let resolve_null (mat, t) i =
@@ -175,7 +173,6 @@ let generate_hermite size deg =
 let is_line_null mat i =
   let _, m = size mat in
   let rec loop j =
-    Printf.printf "is_line_null(%d;%d) \n" i j;
     if j >= m then true else if mat.(i).(j) <> 0 then false else loop (j + 1)
   in
   loop 0
@@ -184,7 +181,6 @@ let isolate_not_null mat =
   let mat = transpose mat in
   let n, _ = size mat in
   let rec loop l i =
-    Printf.printf "isolate_not__null(%d) \n" i;
     if i >= n then l
     else if is_line_null mat i then loop l (i + 1)
     else loop (mat.(i) :: l) (i + 1)
@@ -206,5 +202,4 @@ let cmp_vect a b =
 let equals_not_null a b =
   let la = List.sort cmp_vect (isolate_not_null a)
   and lb = List.sort cmp_vect (isolate_not_null b) in
-  Printf.printf "compare \n";
   List.compare cmp_vect la lb = 0

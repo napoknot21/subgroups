@@ -1,12 +1,24 @@
 open Subgroups.Prime
 open Subgroups.Formula
+open Subgroups.Groups
+open Subgroups.Lattice
+
+let test =
+  let set = generate_subgroups 2 1 in
+  let lattice = make_lattice 2 set in
+  ()
 
 let () =
-  let file = open_out "output.txt" in
+  let set = generate_subgroups 2 2 in
+  let lattice = make_lattice (2*2) set in
+  let file = open_out "output.dot" in
+    to_dot 4 lattice file;
+  close_out file;
+  (* let file = open_out "output.txt" in
     for i = 0 to 5000 do
       Printf.fprintf file "%d %d\n" i (number_of_subgroups i);
     done;
-    close_out file;
+    close_out file; *)
 
 
   (* Printf.printf "\n[";
