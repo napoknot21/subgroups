@@ -74,5 +74,14 @@ let make_lattice set_list =
 
 (* TODO *)
 let to_dot lat out =
-  let _,_ = lat,out  in ()
+  let print_edge u v =
+    Printf.fprintf out "  %d -> %d;\n" (ord lat.set.(u)) (ord lat.set.(v))
+  in
+  let print_node i =
+    Printf.fprintf out "  %d [label=\"%d\"];\n" (ord lat.set.(i)) (ord lat.set.(i))
+  in
+  Printf.fprintf out "digraph {\n";
+  Array.iteri (fun i _ -> print_node i) lat.set;
+  Array.iteri (fun u vs -> List.iter (print_edge u) vs) lat.links;
+  Printf.fprintf out "}\n"
 
