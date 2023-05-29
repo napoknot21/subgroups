@@ -9,6 +9,7 @@ byte:
 clean:
 	dune clean
 	rm -f ./main.bc
+	rm -rf ./dots
 
 test:
 	dune runtest
