@@ -19,3 +19,4 @@ val hermite_line : matrix -> matrix * matrix
 val union : matrix -> matrix -> matrix
 val generate_hermite : int -> int -> matrix
 val equals_not_null : matrix -> matrix -> bool
+

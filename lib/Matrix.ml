@@ -1,4 +1,4 @@
-(* Fucntion for matrix calculation *)
+(* Function for matrix calculation *)
 
 type matrix = int array array
 
@@ -56,7 +56,17 @@ let reduce (mat, t) li cj ck =
   in
   let k = mat.(li).(cj) / mat.(li).(ck) in
   Printf.printf "%d - %d*%d\n" cj k ck;
-  (assign_col mat cj (-k) ck, assign_col t cj (-k) ck)
+  let mat = assign_col mat cj (-k) ck in
+  let t = assign_col t cj (-k) ck in
+  (* Check and correct the sign of pivot *)
+  let mat =
+    if mat.(li).(cj) < 0 then
+      let adjust (i, j) = if j = cj then -mat.(i).(j) else mat.(i).(j) in
+      let n, m = size mat in
+      make adjust n m
+    else mat
+  in
+  (mat, t)
 
 let is_reduced (mat, _) i =
   let _, m = size mat in
@@ -115,8 +125,19 @@ let rec hermite_loop (mat, t) i =
 let hermite mat =
   let _, m = size mat in
   let mat, t = hermite_loop (mat, id m) 0 in
-  (*TODO: let rec loop mat,t i j =
-    loop (reduce_left (mat,t))*)
+  let rec make_pivot_positive mat t i =
+    let n, _ = size mat in
+    if i >= n then (mat, t)
+    else
+      let pivot = mat.(i).(i) in
+      if pivot < 0 then
+        let mat = mul_scalar mat (-1) in
+        let t = mul_scalar t (-1) in
+        make_pivot_positive mat t (i + 1)
+      else
+        make_pivot_positive mat t (i + 1)
+  in
+  let mat, t = make_pivot_positive mat t 0 in
   (mat, t)
 
 let transpose mat =
