@@ -20,9 +20,7 @@
 \newcommand*{\pmZpmZ }{p^m\Z \x p^m\Z}
 \newcommand*{\ZZpmZ}{\Z^2/\pmZpmZ}
 \newcommand*{\ZZnZ}{\Z^2/\nZnZ}
-\newcommand{\ZnZ}{\Z/n\Z}
 \newcommand{\ZpmZ}{\Z/p^m\Z}
-\newcommand{\ZZ}{\ZnZ \x \ZnZ}
 \newcommand{\ZZpm}{\ZpmZ \x \ZpmZ}
 \newcommand{\nZnZ}{n\Z \x n\Z}
 \newcommand{\Mz}{\Set*{
@@ -276,7 +274,6 @@ Fonction hermite(A) :
 	vérifier signe des pivots de $A$
 	Retourner $A$
 
-
 \end{lstlisting}
 	\newpage\noindent
 	Montrons la terminaison de l'algorithme.\\
@@ -396,7 +393,7 @@ Hermite, nous pourrons générer tous les sous-groupes de $\Z^2$
 La proposition suivante, va nous être utile pour trouver la bonne forme des matrices de Hermite
 ainsi que la génération du treillis.
 
-\begin{proposition}\label{guh_g_ssi_a_sim_b}
+\begin{proposition}\label{guh_g_ssi_hab_sim_b}
 	Soient $A,B \in \M_{m,n}$ deux formes normales de Hermite et soit $G$ (resp. $H$) le
 	groupe engendré par les colonnes de $A$ (resp. $B$). Alors,
 	$$G \cup H = G \ssi hermite(A | B) \sim A$$
@@ -438,7 +435,7 @@ les sous-groupes de $\ZZpmZ$. Dans la section \ref{simp_ss_gr}, nous avons montr
 sous-groupes de $\Z^2$ recherché sont les sous groupes $G$ tels que
 $\pmZpmZ \subseteq G$, \cad
 $$ G \cup \pmZpmZ = G$$
-Par la proposition \ref{guh_g_ssi_a_sim_b}, cela revient à trouver les
+Par la proposition \ref{guh_g_ssi_hab_sim_b}, cela revient à trouver les
 matrices $H = \begin{pmatrix}
 		\alpha & 0      \\
 		\beta  & \gamma
@@ -600,17 +597,55 @@ $$
 	\end{equation*}
 \end{corollary}
 
+\begin{proposition}
+	Si $A \in  \M_2$ est injective et $B = AC$ avec $C \in \M_2$ alors,
+	$$\im A/\im B  \isom \Z^2/\im C$$
+\end{proposition}
+
+\begin{proof}
+	Considérons \app{f}{\Z^2}{\im A \rightarrow \im A / \im B}{x}{Ax \;\;\;\mapsto Ax + \im B}
+	Cette application est surjective par définition. Calculons sont noyau.
+	\begin{equation*}
+		\begin{aligned}
+			x \in Ker f & \ssi Ax \in \im B             \\
+			            & \ssi \ex y \cma Ax = by = ACy \\
+			            & \ssi x \in \im C
+		\end{aligned}
+	\end{equation*}
+	D'où par le premier théorème d'isomorphisme,
+	$$\im A/\im B  \isom \Z^2/\im C$$
+\end{proof}
+\newpage
+
+\begin{proposition}
+	Soient $A,B \in \M_2$
+	$$\im B \subset \im A \implies \ex C \in \M_2 \cma B = AC$$
+\end{proposition}
+
+\begin{proof}
+	Notons que par la proposition \ref{ima_imh}, on peut supposer sans pertes de généralités que $A$ et $B$
+	sont des formes normales de Hermite.\\
+	Comme $\im A$ (resp. $\im B$) est le groupe généré par les colonnes de $A$ (resp. $B$)
+	et que $\im A \cup \im B = \im A$ car $\im B \subset \im A$,
+	par la proposition \ref{guh_g_ssi_hab_sim_b}, on a
+	$$\im A \cup \im B \ssi hermite (A|B) \sim A$$
+	Autrement dit, les colonnes de $B$ sont des combinaisons linéaires des colonnes de $A$ et
+	donc, en particulier, il existe $C \in \M_2$ telle que $B = AC$.
+
+\end{proof}
+
 \begin{proposition}\label{pi_imh}
 	Soit $\sapp{\pi}{\Z^2}{\ZZnZ}$ et soit $H \in \M_2$ une matrice de Hermite de la forme
 	$ H = \matsqr{\alpha}{0}{\beta}{\gamma}$.
 	$$H \in M \ssi \im(H)/\pmZpmZ = \pi(\im H) =
 		\gen{\pi\vectcolsqr{\alpha}{\beta}, \pi\vectcolsqr{0}{\gamma}}$$
 \end{proposition}
+
 \begin{proof}
-	(admise ?)
+	Cela découle des deux propositions précédentes en prenant $B = \matsqr{p^m}{0}{0}{p^m}$
+
 \end{proof}
 
-\newpage
 \begin{example}[Cas pour $n = 2$]
 	Nous avons $n = 2 = 2^1$ donc $m = 1$.\\
 	Calculons les matrices appartenant à $$M_0 = \Set*{
@@ -661,20 +696,61 @@ $$
 	\end{equation*}
 \end{example}
 
-\newpage
-\begin{proposition}
+\begin{proposition}\label{card_h}
 	soit $H = \matsqr{\alpha}{0}{\beta}{\gamma}$ une forme normale d'Hermite. Alors
-	$$\left\lvert Z^2/\im H \right\rvert = \det(H) = \alpha\beta$$
+	$$\left\lvert Z^2/\im H \right\rvert = \det(H) = \alpha\gamma$$
 \end{proposition}
 
 \begin{proof}
-	(admise ?)
+	Montrons que $E = \Set*{(x,y)}{0 \le x \le \alpha, 0 \le y \le \gamma}$ est un système de représentants
+	des classes modulo $\im H$.\\
+	Pour cela, montrons que si $(x,y)$ est dans $\Z^2$, alors il est en relation
+	avec un élément de $E$, et les éléments de $E$ ne sont pas en relation.\\
+	Soit $(x,y) \in \Z^2$. Commençons par faire la division euclidienne de $x$ par $\alpha$ :\\
+	$$ \ex q \cma 0 \le r < \alpha \cma x = \alpha q + r$$
+	Nous avons $(r,y - \beta q) = (x,y) - q(\alpha, \beta)$.\\
+	Faisons maintenant la division euclidienne de $y - \beta q $ par $\gamma$ :
+	$$\ex t \cma 0 \le s < \gamma \cma y - \beta q = \gamma t + s$$
+	Il suit que
+	$$(r,s) = (x,y)- q(\alpha, \beta) - t(0, \gamma)$$
+	Montrons que deux éléments de $E$ ne sont pas en relations.\\
+	Soit $(x,y) \in E$. Comme $0 \le x < \alpha$, la division euclidienne de $x$ par $\alpha$ est $x$.\\
+	De même, la division euclidienne de $y$ par $\gamma$ est $y$.\\
+	Donc la seule relation possible d'un élément de $E$ est avec lui-même.\\
+	Le nombre de classes est donc
+	$$ |E| = \alpha \gamma$$
+
 \end{proof}
 
 \begin{remark}
 	En particulier, si $H \in M$, $ord(\pi(H)) = p^{a+b}$
 \end{remark}
+
+\begin{proposition}
+	Soit $H = \matsqr{p^a}{0}{jp^k}{p^b}$ une forme normale de Hermite.\\
+	Alors le sous-groupe $G$ de $\ZZ$ isomorphe à $\im(H)/\pmZpmZ$ est de cardinal
+	$$|G|= p^{2m - a - b}$$
+\end{proposition}
+
+\begin{proof}
+	Par la proposition \ref{card_h}, on a
+	$$|\Z^2/\im H| = p^{a+b}$$.
+
+
+	Par le troisième théorème d'isomorphisme, on a
+	\begin{equation}\label{3e_card}
+		(\Z^2/\pmZpmZ)/(\im H/\pmZpmZ) \isom \Z^2/\im H
+	\end{equation}
+	Le sous-groupe $G$ correspondant à $H$ est $\im H/\pmZpmZ$.\\
+	En prenant le cardinal de l'égalité (\ref{3e_card}), nous obtenons
+	\begin{equation*}
+		|G| = |\Z^2/\pmZpmZ|/|\Z^2/\im H |
+	\end{equation*}
+	Or, $\ZZpmZ \isom \ZZpm$, d'où
+	$$|G| = p^{2m - a - b}$$
+\end{proof}
 %- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
+\newpage
 \subsection{Énumération des sous-groupes}
 Grâce aux résultats démontrés dans la section précédente, nous pouvons donc énumérer\\
 les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
@@ -794,9 +870,9 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 	\item[[\,1\!\!]] COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
 	\item[[\,2\!\!]] \textbf{TODO livre algo}
 	\item[[\,3\!\!]] PERNET Clément, \textit{Calcul de formes normales matricielles: de
-		      l'algorithmique à la mise en \\pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
+		      l'algorithmique à la mise en pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
 	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices},
-	      $2^e$ édition.\\
+	      $2^e$ édition.
 	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
 \end{enumerate}
 \end{document}

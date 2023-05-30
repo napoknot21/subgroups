@@ -7,5 +7,4 @@
 *.gz
 *.toc
 .ocamlinit
-*.png
-*.dot
+output*
