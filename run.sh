@@ -25,7 +25,7 @@ while getopts ":n:pgo:" opt; do
       g_flag="-g"
       ;;
     o )
-      o_value="-o $OPTARG"
+      o_value=$OPTARG
       ;;
     \? )
       usage
@@ -44,15 +44,25 @@ if [ -z "$n_value" ]; then
   usage
 fi
 
+# Check if the -o flag is provided
+if [ -n "$o_value" ]; then
+  # Verify if the output file name has .dot extension
+  if [[ $o_value != *.dot ]]; then
+    echo "The output file must have a .dot extension."
+    usage
+  fi
+fi
+
 # Run the OCaml program with the specified parameters
 dune exec bin/main.exe -- -n "$n_value" $p_flag $g_flag $o_value
 
-# Run the project
-# dune exec subgroups
+# Check if the 'dots' directory exists, create it if not
+if [ ! -d "dots" ]; then
+  mkdir dots
+fi
 
-#Check if the directory 'dots' exists
-# mkdir dots
-
-#Generate a pdf and a image file from the dot file
-#dot -Tpng ./output.dot -o ./dots/output.png
-#dot -Tpdf ./output.dot -o ./dots/output.pdf
+# Generate a PNG and PDF file from the dot file
+if [ -n "$o_value" ]; then
+  dot -Tpng "$o_value" -o "dots/output.png"
+  dot -Tpdf "$o_value" -o "dots/output.pdf"
+fi

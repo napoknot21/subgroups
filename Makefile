@@ -10,6 +10,7 @@ clean:
 	dune clean
 	rm -f ./main.bc
 	rm -rf ./dots
+	rm -f output.dot
 
 test:
 	dune runtest
