@@ -44,14 +44,14 @@ let () =
         Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n_value n_value
           (number_of_subgroups n_value);
 
-        if List.length l <> 1 then (
+        if List.length l <> 1 || !n = Some(1) then (
           Printf.printf "n must be p^m where p is prime !\n";
           exit 1)
         else (
           Printf.printf "Generating subgroups...";
           flush stdout;
           let (a,b) = List.hd l in
-          let set = generate_subgroups  a b in
+          let set = generate_subgroups a b in
           Printf.printf "done\nGenerating lattice...";
           flush stdout;
 
