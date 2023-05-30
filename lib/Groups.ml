@@ -6,8 +6,8 @@ type group = { card : int; mat : matrix }
 let ord n a d =
   match (a, d) with
   | 0, 0 -> 1
-  | 0, d -> n * n / d
-  | a, 0 -> n * n / a
+  | 0, d -> n / d
+  | a, 0 -> n / a
   | a, d -> n * n / (a * d)
 
 let compare_ord g h = Int.compare g.card h.card

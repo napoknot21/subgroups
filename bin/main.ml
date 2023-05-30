@@ -7,13 +7,22 @@ let test =
   let set = generate_subgroups 2 1 in
   let lattice = make_lattice set in
   ()
+let n = 8
 
 let () =
-  let set = generate_subgroups 2 2 in
+  Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n n (number_of_subgroups n);
+  Printf.printf "Generating subgroups...";
+  flush stdout;
+  let set = generate_subgroups 2 3 in
+  Printf.printf "done\nGenerating lattice...";
+  flush stdout;
   let lattice = make_lattice set in
+  Printf.printf "done\nWriting the graph dot file...";
+  flush stdout;
   let file = open_out "output.dot" in
     to_dot lattice file;
   close_out file;
+  Printf.printf "done\n"
   (* let file = open_out "output.txt" in
     for i = 0 to 5000 do
       Printf.fprintf file "%d %d\n" i (number_of_subgroups i);

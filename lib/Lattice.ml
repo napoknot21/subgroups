@@ -12,8 +12,8 @@ let compare_groups g h =
   if g.card = h.card then Non_comparable
   else
     let u, _ = hermite (union g.mat h.mat) in
-    if equals_not_null g.mat u then Comparable (-1)
-    else if equals_not_null h.mat u then Comparable 1
+    if g.card > h.card && equals_not_null g.mat u then Comparable (-1)
+    else if g.card < h.card && equals_not_null h.mat u then Comparable 1
     else Non_comparable
 
 let make_relations_table set =

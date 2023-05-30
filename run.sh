@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run the project
-make run
+dune exec subgroups
 
 #Check if the directory 'dots' exists
 mkdir dots
