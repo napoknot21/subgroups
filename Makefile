@@ -19,9 +19,9 @@ debug: byte
 	cp _build/default/bin/main.bc .
 	ocamldebug main.bc
 
+run: binary
+	dune exec bin/main.exe -- $(ARGS)
 
-run:
-	dune exec subgroups
 summary:
 	@./test-summary
 

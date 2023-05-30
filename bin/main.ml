@@ -1,51 +1,106 @@
-open Subgroups.Prime
+(* Include necessary modules *)
 open Subgroups.Formula
+open Subgroups.Prime
 open Subgroups.Groups
 open Subgroups.Lattice
 
-open Arg
-
+(* Command line arguments *)
 let n = ref 0
-let output_file = ref "output.dot"
-let draw_graph = ref true
-let show_prime = ref false
+let p = ref false
+let g = ref true
+let o = ref "output.dot"
 
-let speclist = [
-  ("-n", Set_int n, "Integer value to operate on");
-  ("-o", Set_string output_file, "Output file name");
-  ("-g", Set_bool draw_graph, "Whether to draw a graph (default is true)");
-  ("-p", Set_bool show_prime, "Whether to display the prime decomposition (default is false)");
+(* Specification of command line options *)
+let specs = [
+  ("-n", Arg.Int (fun x -> n := x), "Set the value of n");
+  ("-p", Arg.Set p, "Decomposition into prime numbers");
+  ("-g", Arg.Set g, "Whether to draw a graph (default is true)");
+  ("-o", Arg.String (fun s -> o := s), "Set the output file name")
 ]
 
-let () =
-  parse speclist (fun _ -> ()) "Usage: -n [int] -o [output filename] -g [draw graph] -p [display prime decomposition]";
-  let prime_factors = Prime.factorise !n in
-  if List.length prime_factors > 1 then
-    Printf.printf "The program cannot generate a graph for composite numbers. The number of subgroups is %d.\n" (number_of_subgroups !n)
-  else
-    begin
-      if !show_prime then 
-        let _ = List.map (fun (p, m) -> Printf.printf "%d^%d " p m) prime_factors in
-        Printf.printf "\n";
-      Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n n (number_of_subgroups n);
-      Printf.printf "Generating subgroups...";
-      flush stdout;
-      let set = generate_subgroups (fst (List.hd prime_factors)) (snd (List.hd prime_factors)) in
-      Printf.printf "done\nGenerating lattice...";
-      flush stdout;
-      let lattice = make_lattice set in
-      Printf.printf "done\n";
-      if !draw_graph then
-        begin
-          Printf.printf "Writing the graph dot file...";
-          flush stdout;
-          let file = open_out !output_file in
-          to_dot lattice file;
-          close_out file;
-          Printf.printf "done\n"
-        end
-    end
 
+let () =
+  Arg.parse specs print_endline "Usage: main.ml -n <n_value> [-p] [-g] [-o output_file_name]";
+
+  let n_value = !n in
+  if n_value < 1 then (
+    Printf.printf "Please provide a valid value for n (n > 0).\n";
+    exit 1
+  );
+
+  let prime_decomposition = !p in
+  let draw_graph = !g in
+  let output_file_name = !o in
+
+  Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n_value n_value (number_of_subgroups n_value);
+  Printf.printf "Generating subgroups...";
+  flush stdout;
+
+  let set = generate_subgroups 2 3 in
+  Printf.printf "done\nGenerating lattice...";
+  flush stdout;
+  
+  let lattice = make_lattice set in
+  Printf.printf "done\n";
+  
+  if draw_graph then (
+    Printf.printf "Writing the graph dot file...";
+    flush stdout;
+    let file = open_out output_file_name in
+    to_dot lattice file;
+    close_out file;
+    Printf.printf "done\n"
+  );
+  
+  if prime_decomposition then (
+    let factors = Prime.factorise n_value in
+    List.iter (fun (p, m) -> Printf.printf "(%d^%d) " p m) factors;
+    Printf.printf "\n"
+  )
+
+
+(*
+  Arg.parse speclist (fun _ -> ()) "Usage: program [-n n] [-g] [-o output] [-p]";
+
+  let n = !n in
+  let draw_graph = !draw_graph in
+  let output = !output in
+  let print_prime = !print_prime in
+
+  if n = 0 then failwith "Please set a non-zero n using -n";
+
+  if print_prime then (
+    let primes = Prime.factorise n in
+    Printf.printf "Prime factorisation: %s\n" (string_of_int_list primes);
+  );
+
+  Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n n (number_of_subgroups n);
+  Printf.printf "Generating subgroups...";
+  flush stdout;
+
+  if Prime.fold_prime_couple (Prime.factorise n) > 1 then (
+    Printf.printf "Sorry, the program can only generate graphs for p^m.\n";
+    exit 1
+  );
+
+  let set = generate_subgroups 2 3 in
+
+  Printf.printf "done\nGenerating lattice...";
+  flush stdout;
+  
+  let lattice = make_lattice set in
+
+  Printf.printf "done\n";
+
+  if draw_graph then (
+    Printf.printf "Writing the graph dot file...";
+    flush stdout;
+    let file = open_out output in
+    to_dot lattice file;
+    close_out file;
+    Printf.printf "done\n"
+  )
+*)
 (*
 let test =
   let set = generate_subgroups 2 1 in
