@@ -35,7 +35,7 @@ let links_exist groups adj u v =
   in
   loop 0 (Array.length adj)
 
-let neighbours groups t u =
+let neighbours t u =
   let rec loop a i set m =
     if i >= m then set
     else
@@ -44,8 +44,7 @@ let neighbours groups t u =
       | Comparable k ->
           if k = -1 then loop a (i + 1) (i :: set) m else loop a (i + 1) set m
   in
-  let res = loop t.(u) 0 [] (Array.length t.(u)) in
-  List.sort (fun i j -> compare_ord groups.(i) groups.(j)) res
+  loop t.(u) 0 [] (Array.length t.(u))
 
 let rec loop_neighbours groups g u = function
   | [] -> g
@@ -58,7 +57,7 @@ let rec loop_neighbours groups g u = function
 let make_graph groups t =
   let rec loop_u m g u =
     if u >= m then g
-    else loop_u m (loop_neighbours groups g u (neighbours groups t u)) (u + 1)
+    else loop_u m (loop_neighbours groups g u (neighbours t u)) (u + 1)
   in
   loop_u (Array.length groups)
     (Array.init (Array.length groups) (fun _ -> []))
@@ -79,7 +78,7 @@ let to_dot lat out =
           let row = m.(i) in
           String.concat "," (List.map string_of_int (Array.to_list row)))
     in
-    "{ " ^ String.concat " | " (Array.to_list rows) ^ " }"
+    "[" ^ String.concat "]\n[" (Array.to_list rows) ^ "]"
   in
   let print_edge u v = Printf.fprintf out "%d -> %d;\n" u v in
   Printf.fprintf out "digraph G {\n";
@@ -89,32 +88,3 @@ let to_dot lat out =
     List.iter (print_edge i) lat.links.(i)
   done;
   Printf.fprintf out "}\n"
-
-(*
-  let oc = open_out out in
-  let node_to_string (group: group) =
-    let matrix_to_string (mat: matrix) =
-      let string_rows = Array.map (fun row ->
-        let string_row = Array.map string_of_int row in
-        "(" ^ (String.concat ", " (Array.to_list string_row)) ^ ")"
-      ) mat in
-      "[ " ^ (String.concat "; " (Array.to_list string_rows)) ^ " ]"
-    in
-    matrix_to_string group.mat
-  in
-  let write_nodes oc =
-    Array.iteri (fun i group ->
-      Printf.fprintf oc "\t%d [label=\"%s\"];\n" i (node_to_string group)
-    ) lat.set
-  in
-  let write_edges oc =
-    Array.iteri (fun i node ->
-      List.iter (fun j -> Printf.fprintf oc "\t%d -> %d;\n" i j) node
-    ) lat.links
-  in
-  Printf.fprintf oc "digraph lattice {\n";
-  write_nodes oc;
-  write_edges oc;
-  Printf.fprintf oc "}\n";
-  close_out oc
-  *)

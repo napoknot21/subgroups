@@ -10,7 +10,7 @@ usage() {
 n_value=""
 p_flag=""
 g_flag=""
-o_value=""
+o_value="output.dot"
 
 # Parse command-line arguments
 while getopts ":n:pgo:" opt; do

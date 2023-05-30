@@ -808,6 +808,7 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 		\sum_{i = 0}^{n}\frac{1- p^{n-i+1}}{1 - p}}
 \end{proof}
 
+\newpage
 \begin{proposition}
 	Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$ avec $p_i$ des nombres premiers distincts\\
 	Le nombre total de sous-groupes de $\ZZ$ est
@@ -845,21 +846,93 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Génération du treillis}
-%Algorithme génération du treillis
-%Choix de .dot et graphivz
+Dans cette partie, nous définirons l'algorithme que nous avons utilisé
+pour générer le treillis. Nous avons choisi d'utiliser le logiciel libre de droits graphivz afin
+de générer les graphes à partie du treillis généré dans notre programme.\\
+Notre algorithme prend en paramètres l'ensemble des sous-groupes $G$ ainsi que leur table de relation
+$T$
+
+\begin{lstlisting}
+fonction creer_treillis $G$ $T$ =
+	$G \leftarrow$ Trier $G$ par la cardinalité
+	L = $\NO$
+	Pour chaque $u \in G$:
+		Pour chaque $v \in  T[u]$:
+			Si $\nexists (u,v') \in L$ tel que $v' \subset v $
+				Alors $L \cup \set{(u,v)}$
+	Retourner $(G,L)$
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Quelques résultats}
+Les différentes figures ainsi que le nombre de sous-groupes ont été générées par
+notre programme.
 %- - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - -- - - - - -
 \subsection{Pour n = 2}
-%pour n = 2
+\noindent
+Nombre de sous-groupe de $\Z/2\Z \x \Z/2\Z$ : 5
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.4]{Z2ZxZ2Z.png}
+	\caption{
+		Treillis des sous-groupes de $\Z/2\Z \x \Z/2\Z$ avec les forme normale de Hermite
+		correspondantes
+	}
+\end{figure}
 %- - - - - -- - - - - - - - - - - - - - - - - - - - - - - - -- - - - - - -- - -
 \subsection{Pour n = 4}
-% pour n = 4
+\noindent
+Nombre de sous-groupe de $\Z/4\Z \x \Z/4\Z$ : 15
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.4]{Z4ZxZ4Z.png}
+	\caption{
+		Treillis des sous-groupes de $\Z/4\Z \x \Z/4\Z$ avec les forme normale de Hermite
+		correspondantes
+	}
+\end{figure}
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-\subsection{Pour n = 6}
-% pour n = 20
+\newpage
+\subsection{Pour n = 8}
+\noindent
+Nombre de sous-groupe de $\Z/8\Z \x \Z/8\Z$ : 37
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.3]{Z8ZxZ8Z.png}
+	\caption{
+		Treillis des sous-groupes de $\Z/2\Z \x \Z/2\Z$ avec les forme normale de Hermite
+		correspondantes
+	}
+\end{figure}
+
+%- - - - - - - - - - - - -  - - - - - - -  - - - - - - - -  - -
+\subsection{Quelques valeur de la suite du nombre de sous-groupes}
+\begin{center}
+	\begin{tabular}{|l | l|}
+		\hline
+		n  & $|S(\ZZ)|$ \tabularnewline
+		\hline
+		0  & $\oo$ \tabularnewline
+		1  & 1 \tabularnewline
+		2  & 5 \tabularnewline
+		3  & 6\tabularnewline
+		4  & 15 \tabularnewline
+		5  & 8\tabularnewline
+		6  & 30 \tabularnewline
+		7  & 10 \tabularnewline
+		8  & 37 \tabularnewline
+		9  & 23 \tabularnewline
+		10 & 40 \tabularnewline
+		11 & 14 \tabularnewline
+		12 & 90 \tabularnewline
+		13 & 16 \tabularnewline
+		14 & 50 \tabularnewline
+		15 & 48 \tabularnewline
+		\hline
+	\end{tabular}
+
+\end{center}
 
 %nombre de sous-groupes + treillis .dot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -867,12 +940,15 @@ les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \section{Bibliographie}
 \begin{enumerate}
 
-	\item[[\,1\!\!]] COSTE Michel, \textit{Algèbre linéaire sur les entiers}, Mars 2018
-	\item[[\,2\!\!]] \textbf{TODO livre algo}
-	\item[[\,3\!\!]] PERNET Clément, \textit{Calcul de formes normales matricielles: de
-		      l'algorithmique à la mise en pratique}, Séminaire SIESTE, ENS-Lyon, 12 février 2013
-	\item[[\,4\!\!]] BERHURY Grégory, \textit{Algèbre le grand combat : Cours et exercices},
-	      $2^e$ édition.
-	      Paris : Calvage \& Mounet, 2020. 1215 p. (Mathématiques en devenir)
+	\item[[\,1\!\!]] COSTE Michel; \textit{Algèbre linéaire sur les entiers}; Mars 2018
+	\item[[\,2\!\!]] Thomas H. Cormen, Charles Leiserson, Ronald Rivest, Clifford Stein;\\
+	      \textit{Algorithmique : cours avec 957 exercices et 158 problèmes}, $3^e$ édition, Paris : Dunod; DL 2010
+	\item[[\,3\!\!]] PERNET Clément; \textit{Calcul de formes normales matricielles: de
+		      l'algorithmique à la mise en pratique}; Séminaire SIESTE; ENS-Lyon; 12 février 2013
+	\item[[\,4\!\!]] BERHURY Grégory; \textit{Algèbre le grand combat : Cours et exercices};
+	      $2^e$ édition;
+	      Paris : Calvage \& Mounet; 2020. 1215 p. (Mathématiques en devenir)
+	\item[[\,5\!\!]] Mario Hampejs, Nicki Holighaus, László Tóth, Christoph Wiesmeyr;\\
+	      \textit{Representing and counting the subgroups of the group $Z_m \x Z_n$}; 2012
 \end{enumerate}
 \end{document}
