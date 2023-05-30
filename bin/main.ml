@@ -27,7 +27,7 @@ let () =
       if !show_prime then 
         let _ = List.map (fun (p, m) -> Printf.printf "%d^%d " p m) prime_factors in
         Printf.printf "\n";
-      Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" !n !n (number_of_subgroups !n);
+      Printf.printf "|Z/%dZ x Z/%dZ| = %d\n" n n (number_of_subgroups n);
       Printf.printf "Generating subgroups...";
       flush stdout;
       let set = generate_subgroups (fst (List.hd prime_factors)) (snd (List.hd prime_factors)) in
