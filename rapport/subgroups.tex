@@ -160,7 +160,8 @@ fonction rho_pollard P n x y k i d
         x = P(x) mod n
         d = pgcd(|y - x|, n)
         Si i = k:
-            Alors, Retourne rho_pollard loop P n x x 2k (i + 1) d
+            Alors,
+				Retourne rho_pollard P n x x 2k (i + 1) d
         Sinon Retourne rho_pollard P n x y k (i + 1) d
 \end{lstlisting}
 Puis nous répétons la procédure jusqu'à que les diviseurs soient premier.\\
@@ -176,7 +177,7 @@ Dans notre implémentation, $P(X) = X^2 - 1$ et $n$ n'est pas premier.
 \end{proposition}
 \begin{proof}
 	Soit \app{\varphi}{\Z^2}{\ZZ}{(a,b)}{(\bar a, \bar b)}
-	$\varphi$ est surjectif par définition de la classe d'équivalence de a et b.
+	$\varphi$ est surjectif par définition de la classe d'équivalence de a et b.\\
 	Montrons que $\ker \varphi = n\Z \x n\Z$.
 
 	\begin{equation*}
@@ -255,17 +256,17 @@ Fonction hermite_aux($A$, $i$):
 			Si $a_{ij}$ < 0 : réaliser l'opération $C_j \leftarrow -C_j$
 			$k,r$ = div_euclide($a_{ij}$, $a_{ii}$)
 			réaliser l'opération $C_j \leftarrow C_j - kC_i$
-	Si $\forall i < j <= m, a_{ij} = 0$ :
+	Si $\forall i < j \le m, a_{ij} = 0$ :
 		Réduire à gauche du pivot
 		Retourner A
 	Sinon
-	$d_{k} = \min(\Set*{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+	$d_{k} = \min(\Set*{a_{ij}}{i \le j \le n a_{ij} \ne 0})$
 	Permuter $C_k$ avec $C_i$
 	hermite_aux($A$, $i$)
 
 Fonction hermite(A) :
 	Pour chaque $i$ allant de A à $n$ :
-		$d_{k} = \min(\Set*{a_{ij}}{i <= j <= n a_{ij} \ne 0})$
+		$d_{k} = \min(\Set*{a_{ij}}{i \le j \le n a_{ij} \ne 0})$
 		Si $d = None$ :
 			Continuer boucle
 		Sinon :
@@ -409,8 +410,7 @@ ainsi que la génération du treillis.
 	Réciproquement, soit $hermite(A | B) \sim A$. Alors, par définition de la relation
 	d'équivalence,\\
 	$hermite(A | B) = (A | 0)$. Ainsi les colonnes de B sont des combinaisons linéaire des
-	colonnes de $A$,\\
-	\cad \, la base de $H$ est une combinaison linéaire de la base de $G$.
+	colonnes de $A$, \cad \, la base de $H$ est une combinaison linéaire de la base de $G$.
 	$$\text{D'où } H \subseteq G \text{ et } G \cup H = G$$
 \end{proof}
 
@@ -423,9 +423,9 @@ de sous-groupe de $\ZZnZ$
 \section {Génération et énumération des sous-groupes}
 Nous allons voir dans cette section la forme des matrices dont les vecteurs colonnes génèrent
 les sous-groupes de $\ZZnZ$, la formule permettant de les compter ainsi que quelques propositions
-sur leurs caractéristiques. Nous avons montré dans\\
-la section \ref{theoreme_chinois} que nous
-pouvons nous restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.\\
+sur leurs caractéristiques.\\
+Nous avons montré dans la section \ref{theoreme_chinois} que nous
+pouvons nous restreindre aux cas où $n = p^m$ avec $p$ un nombre premier et $m \in \N$.
 Ainsi dans cette section, nous supposerons que $n = p^m$.
 
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -604,7 +604,7 @@ $$
 
 \begin{proof}
 	Considérons \app{f}{\Z^2}{\im A \rightarrow \im A / \im B}{x}{Ax \;\;\;\mapsto Ax + \im B}
-	Cette application est surjective par définition. Calculons sont noyau.
+	Cette application est surjective par définition. Calculons son noyau.
 	\begin{equation*}
 		\begin{aligned}
 			x \in Ker f & \ssi Ax \in \im B             \\
@@ -623,12 +623,12 @@ $$
 \end{proposition}
 
 \begin{proof}
-	Notons que par la proposition \ref{ima_imh}, on peut supposer sans pertes de généralités que $A$ et $B$
+	Notons que par la proposition \ref{ima_imh}, nous pouvons supposer sans pertes de généralités que $A$ et $B$
 	sont des formes normales de Hermite.\\
 	Comme $\im A$ (resp. $\im B$) est le groupe généré par les colonnes de $A$ (resp. $B$)
 	et que $\im A \cup \im B = \im A$ car $\im B \subset \im A$,
-	par la proposition \ref{guh_g_ssi_hab_sim_b}, on a
-	$$\im A \cup \im B \ssi hermite (A|B) \sim A$$
+	par la proposition \ref{guh_g_ssi_hab_sim_b}, nous avons
+	$$\im A = \im A \cup \im B \ssi hermite (A|B) \sim A$$
 	Autrement dit, les colonnes de $B$ sont des combinaisons linéaires des colonnes de $A$ et
 	donc, en particulier, il existe $C \in \M_2$ telle que $B = AC$.
 
@@ -642,7 +642,7 @@ $$
 \end{proposition}
 
 \begin{proof}
-	Cela découle des deux propositions précédentes en prenant $B = \matsqr{p^m}{0}{0}{p^m}$
+	Cela découle des deux propositions précédentes en prenant $$B = \matsqr{p^m}{0}{0}{p^m}$$
 
 \end{proof}
 
@@ -733,11 +733,11 @@ $$
 \end{proposition}
 
 \begin{proof}
-	Par la proposition \ref{card_h}, on a
+	Par la proposition \ref{card_h}, nous avons
 	$$|\Z^2/\im H| = p^{a+b}$$.
 
 
-	Par le troisième théorème d'isomorphisme, on a
+	Par le troisième théorème d'isomorphisme, nous avons
 	\begin{equation}\label{3e_card}
 		(\Z^2/\pmZpmZ)/(\im H/\pmZpmZ) \isom \Z^2/\im H
 	\end{equation}
@@ -752,7 +752,7 @@ $$
 %- - - - -- - - - - -- - - - - - -- - - - - - - -- -- - - - - - - - - - - - - -
 \newpage
 \subsection{Énumération des sous-groupes}
-Grâce aux résultats démontrés dans la section précédente, nous pouvons donc énumérer\\
+Grâce aux résultats démontrés dans la section précédente, nous pouvons donc énumérer
 les sous-groupes de $\ZpmZ$. Cela nous donne le théorème suivant :
 \begin{theorem}
 	Soit
@@ -901,7 +901,7 @@ Nombre de sous-groupe de $\Z/8\Z \x \Z/8\Z$ : 37
 	\centering
 	\includegraphics[scale=0.3]{Z8ZxZ8Z.png}
 	\caption{
-		Treillis des sous-groupes de $\Z/2\Z \x \Z/2\Z$ avec les forme normale de Hermite
+		Treillis des sous-groupes de $\Z/8\Z \x \Z/8\Z$ avec les forme normale de Hermite
 		correspondantes
 	}
 \end{figure}

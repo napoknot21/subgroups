@@ -1,0 +1,165 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{utils_slides}
+\usepackage{geometry}
+\usepackage{relsize}
+\usepackage{xstring}
+\usepackage{mathrsfs}
+\usepackage{frcursive}
+\usepackage{setspace}
+\RequirePackage[french]{babel}
+\RequirePackage{amsmath,amssymb,amsthm}
+\RequirePackage{framed}
+\RequirePackage{lmodern}
+\RequirePackage{bbm}
+\DeclareMathOperator{\im}{Im}
+\newcommand{\bigsplit}{\mathclose{}%
+    \nonscript\;\vert\penalty\relpenalty\nonscript\;%
+    \mathopen{}%
+}
+\definecolor{defcolor}{rgb}{0.90,0.30, 0.20}
+\newcommand{\wo}{\backslash}
+\newcommand{\dtp}[2]{\textcolor{#1}{\textbf{{#2}}}}
+\newcommand{\divided}[2]{#1 \, | \, #2}
+\newcommand{\mdiv}[2]{#1 \, | \, #2}
+\newcommand{\m}[1]{$#1$}
+\newcommand{\bb}[1]{$\mathbb #1$}
+\newcommand{\mbb}[1]{\mathbb #1}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wb}[1]{\overline{#1}}
+\newcommand{\pol}[1]{#1[X]}
+\newcommand{\mc}[1]{$\mathcal #1$}
+\newcommand{\mcal}[1]{\mathcal #1}
+\newcommand{\matcoeff}[4]{(#1_{#2 #3})_{\cple{#2}{#3} \in #4}}
+\newcommand{\suit}[3]{(#1_{#2})_{#3}}
+\newcommand{\monogen}[1]{\mcal M(\mcal #1)}
+\newcommand{\trigen}[1]{\sigma(\mcal #1)}
+\newcommand{\sapp}[3]{#1 :  #2 \to #3}
+\newcommand{\s}{\star}
+\newcommand{\p}{\cdot}
+\newcommand{\oo}{\infty}
+\newcommand{\isom}{\simeq }
+\newcommand{\cad}{c'est-à-dire}
+\newcommand{\Cad}{C'est-à-dire}
+\newcommand{\app}[5]
+{\begin{alignat*}{2}
+	#1  :  #2 & \to #3 \\
+	    #4  & \mapsto #5
+\end{alignat*}}
+\newcommand{\ZnZ}{\Z/n\Z}
+\newcommand{\ZZ}{\ZnZ \x \ZnZ}
+\newcommand{\R}{\mbb R}
+\newcommand{\C}{\mbb C}
+\newcommand{\A}{\mcal A}
+\newcommand{\K}{\mbb K}
+\newcommand{\Q}{\mbb Q}
+\newcommand{\Z}{\mbb Z}
+\newcommand{\N}{\mbb N}
+\newcommand{\B}{\mcal{B}}
+\newcommand{\E}{\mbb E}
+\newcommand{\M}{\mathscr{M}}
+\newcommand{\NO}{\varnothing}
+\newcommand{\Pa}{\mcal P}
+\newcommand{\Pb}{\mbb P}
+\newcommand{\G}{\mcal G}
+\newcommand{\GL}{\it {GL}}
+\newcommand{\bor}{\B(\R)}
+\newcommand{\fe}{\mcal E}
+\newcommand{\ind}{\mathbbm{1}}
+\newcommand{\cple}[2]{(#1, \, #2)}
+\newcommand{\trip}[3]{(#1, \, #2, \, #3)}
+\newcommand{\si}[2]{#1 & \text{ si } #2}
+\newcommand{\inv}[1]{#1^{-1}}
+\newcommand{\sep}{, \,}
+\newcommand{\stos}{\, \to \,}
+\newcommand{\limn}{\lim\limits_{n \to +\oo}}
+\newcommand{\limin}{\limits_{n \in \N}}
+\newcommand{\tontoinfty}{\underset{n \to +\oo}{\longrightarrow}}
+\newcommand{\cvs}{\overset{cvs}{\longrightarrow}}
+\newcommand{\lbbracket}{[\![}
+\newcommand{\rbbracket}{]\!]}
+\newcommand{\ssi}{\Leftrightarrow}
+\newcommand{\gen}[1]{\langle #1 \rangle}
+\newcommand{\x}{\times}
+\newcommand{\cma}{, \;}
+\newcommand{\ex}{\exists \,}
+\newcommand{\fa}{\forall \,}
+\newcommand{\longto}{\longrightarrow}
+\newcommand{\dmu}{d\mu}
+\newcommand{\dnu}{d\nu}
+\newcommand{\dl}{d\lambda}
+\newcommand{\densnorm}{\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}}
+\newcommand{\bbinter}[2]{\lbbracket #1, #2 \rbbracket}
+\newcommand{\degext}[2]{[ #1 : #2]}
+\newcommand{\gof}{g \circ f}
+\newcommand{\matsqr}[4]{
+    \begin{pmatrix}
+    #1 & #2\\
+    #3 & #4
+    \end{pmatrix}}
+\newcommand{\vectcolsqr}[2]
+{\begin{pmatrix}
+    #1\\
+    #2
+    \end{pmatrix}}
+\newcommand{\mlarge}[2][1]{%
+    \IfStrEqCase{#1}{%
+        {1}{\mathlarger{#2}}%
+        {2}{\mathlarger{\mathlarger{#2}}}%
+        {3}{\mathlarger{\mathlarger{\mathlarger{#2}}}}%
+        {4}{\mathlarger{\mathlarger{\mathlarger{\mathlarger{#2}}}}}%
+        {5}{\mathlarger{\mathlarger{\mathlarger{\mathlarger{\mathlarger{#2}}}}}}%
+    }[%
+        %% Unknown math size
+    ]%
+}
+
+\newtheoremstyle{theoremStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+\newtheoremstyle{defStyle}{1}{1}{\itshape}{}{\slshape}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+\newtheoremstyle{exampleStyle}{1}{1}{}{}{}{\dtp{black}{.}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+
+\newtheoremstyle{reminderStyle}{1}{1}{}{}{}{\dtp{black}{:}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+
+
+\newtheoremstyle{warningStyle}{1}{1}{\bf}{}{}{\dtp{black}{:}}
+{ }{\dtp{black}{\thmname{#1} \thmnumber{#2}\thmnote{ (\normalfont #3)}}}
+
+% \theoremstyle{theoremStyle}
+% \newtheorem{theorem}{Théorème}[]
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{corollary}[theorem]{Corollaire}
+% \newtheorem{lemma}[theorem]{Lemme}
+
+% \theoremstyle{defStyle}
+% \newtheorem{definition}[theorem]{Définition}
+
+% \theoremstyle{exampleStyle}
+% \newtheorem{example}[theorem]{Exemple}
+% \newtheorem{remark}[theorem]{Remarque}
+
+% \theoremstyle{reminderStyle}
+% \newtheorem*{reminder}{Rappel}
+
+% \theoremstyle{warningStyle}
+% \newtheorem*{warning}{Attention}
+
+\renewcommand\qedsymbol{$\blacksquare$}
+
+\newcommand*{\SetSuchThat}[1][]{} % reserve the name
+\newcommand*{\ColonSets}{%
+    \renewcommand*\SetSuchThat[1][]{:}%
+}
+\newcommand*{\MvertSets}{%
+    \renewcommand*\SetSuchThat[1][]{%
+        \mathclose{}%
+        \nonscript\;##1\vert\penalty\relpenalty\nonscript\;%
+        \mathopen{}%
+    }%
+}
+\MvertSets % default
+\DeclarePairedDelimiterX \Set [2] {\lbrace}{\rbrace}
+    {\,#1\SetSuchThat[\delimsize]#2\,}
+\newcommand{\set}[1]{\{\,#1 \,\}}
