@@ -1,7 +1,7 @@
 \documentclass{beamer}
 \usetheme{Frankfurt}
-\usepackage{listings}
-\usepackage{graphicx}
+\usepackage{listings} % pour inclure du code
+\usepackage{graphicx} % pour insérer des images
 \usepackage{minted}
 \usepackage{amsmath, amsthm}
 
@@ -9,6 +9,7 @@
 \newtheorem{pf}{Preuve}
 \newtheorem{rmk}{Remarque}
 \newtheorem{prp}{Proposition}
+\newtheorem{df}{Définition}
 \newtheorem{crll}{Corollaire}
 
 \usemintedstyle{monokai}
@@ -29,11 +30,13 @@
 
 \tableofcontents
 
+
 \section{Introduction}
 \begin{frame}
 \frametitle{Introduction}
 \tableofcontents[currentsection]
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Introduction}
@@ -44,20 +47,20 @@
 \end{itemize}
 \end{frame}
 
+
 \section{Quelques simplifications du problème}
 \begin{frame}
 \frametitle{Quelques simplifications du problème}
 \tableofcontents[currentsection]
 \end{frame}
 
+
 \subsection{Décomposition de n en éléments irréductibles}
 \begin{frame}
     \frametitle{Décomposition de n en éléments irréductibles}
-    
     \begin{itemize}
         \item Nous allons simplifier le problème aux cas où $n$ = $p ^ {m}$ avec $p$ un nombre premier et $m \in \mathbb{N}$.
     \end{itemize}
-    
     \begin{prp}
         Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$ avec $p_i$ des nombres premiers distincts. Alors,
     
@@ -69,9 +72,10 @@
     \end{prp}
 \end{frame}
 
+
 \begin{frame}[fragile]
     \begin{itemize}
-        \item Nous avons priviligé l'utilisation de \rho Pollard pour décomposer un entier en facteurs irréductibles
+        \item Nous avons priviligé l'utilisation de $\rho-Pollard$ pour décomposer un entier en facteurs irréductibles
     \end{itemize}
     \frametitle{Décomposition de n en éléments irréductibles}
     \begin{minted}{OCaml}
@@ -91,12 +95,10 @@
 \subsection{Simplification des sous-groupes}
 \begin{frame}
 \frametitle{Simplification des sous-groupes}
-
-\begin{prp}
-    \center $\mathbb{Z}^2/n\mathbb{Z} \times n\mathbb{Z} \cong  \mathbb{Z}^{2}/n\mathbb{Z} \times \mathbb{Z}^{2}/n\mathbb{Z}$
+\begin{prp}<1->
+    \center $\mathbb{Z}^2/n\mathbb{Z} \times n\mathbb{Z} \cong  \mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/n\mathbb{Z}$
 \end{prp}
-
-\begin{rmk}
+\begin{rmk}<2->
     le problème se résout à trouver les sous-groupes \mathbb{G} de \mathbb{Z²} tels que
     \begin{align*}
         H = \begin{pmatrix}
@@ -119,8 +121,8 @@
             >
     \end{align*}
 \end{rmk}
-
 \end{frame}
+
 
 \section{Matrices à coefficients entier et forme normales de Hermite}
 \begin{frame}
@@ -128,21 +130,37 @@
 \tableofcontents[currentsection]
 \end{frame}
 
+
 \subsection{Matrices à coefficients entier}
 \begin{frame}
 \frametitle{Matrices à coefficients entier}
 \begin{itemize}
-\item Contenu ici
+\item La caractérisation des sous-groupes de $\mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/n\mathbb{Z} $ avec une matrice $H$   = \begin{pmatrix}
+    a & c \\
+    b & d
+    \end{pmatrix}
+    a été explorée, mais leur non-unicité nous amène à utiliser les formes normales d'Hermite, soutenues par une proposition clé sur les matrices à coefficients entiers.
 \end{itemize}
+\begin{prp}<2->
+    Soient $A$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ et $Q$ \in $\mathbb{GL}_{n}(\mathbb{Z})$ alors
+    \begin{align*}
+        \mathrm{Im}(AQ) = \mathrm{Im}(A)
+    \end{align*}
+\end{prp}
 \end{frame}
+
 
 \subsection{Formes normales de Hermite}
 \begin{frame}
 \frametitle{Formes normales de Hermite}
 \begin{itemize}
-\item Contenu ici
+\item Nous allons désormais énoncer la définition de la forme normale de Hermite
 \end{itemize}
+\begin{df}<2->
+    Soit $A$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ alors, il existe une unique matrice échelonnée réduite suivant les colonnes $H$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ telle qu'il existe $Q$ \in  $\mathbb{GL}_{n}(\mathbb{Z})$ avec $H$ = $AQ$. La matrice $H$ s'appelle la forme normale de Hermite de $A$.
+\end{df}
 \end{frame}
+
 
 \section{Génération et énumération des sous-groupes}
 \begin{frame}
@@ -150,11 +168,12 @@
 \tableofcontents[currentsection]
 \end{frame}
 
+
 \subsection{Génération des sous-groupes}
 \begin{frame}
 \frametitle{Génération des sous-groupes}
 \begin{itemize}
-    \item Dans cette section, nous supposerons que $n$ = ${p}$^${m}$
+    \item Dans cette section, nous supposerons que $n$ = ${p}^{m}$
 \end{itemize}
 \begin{thm}
     Les seules matrices dont les colonnes génèrent un sous-groupe de $\mathbb{Z}/p^m\mathbb{Z} \times \mathbb{Z}/p^m\mathbb{Z}$ sont les matrices de la forme
@@ -173,9 +192,9 @@
         \end{pmatrix}
         \quad \text{avec } a \leq m, b \leq m, k \leq m \text{ et } j < p^(b-k)
     \end{align*}
-    
 \end{thm}
 \end{frame}
+
 
 \begin{frame}
 \begin{crll}
@@ -248,11 +267,13 @@ fonction creer_treillis (G T) =
 \end{minted}
 \end{frame}
 
+
 \section{Quelques résultats}
 \begin{frame}
 \frametitle{Table des matières}
 \tableofcontents[currentsection]
 \end{frame}
+
 
 \subsection{Pour n = 2}
 \begin{frame}
@@ -266,6 +287,7 @@ fonction creer_treillis (G T) =
 \end{figure}
 \end{frame}
 
+
 \subsection{Pour n = 4}
 \begin{frame}
 \frametitle{Pour n = 4}
@@ -276,8 +298,8 @@ fonction creer_treillis (G T) =
   \centering
   \includegraphics[width=0.8\textwidth]{Z4ZxZ4Z.png}
 \end{figure}
-
 \end{frame}
+
 
 \subsection{Pour n = 8}
 \begin{frame}
@@ -291,10 +313,10 @@ fonction creer_treillis (G T) =
 \end{figure}
 \end{frame}
 
+
 \subsection{Quelques valeur de la suite du nombre de sous-groupes}
 \begin{frame}
 \frametitle{Quelques valeur de la suite du nombre de sous-groupes}
-
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
@@ -304,14 +326,15 @@ fonction creer_treillis (G T) =
         \hline
     \end{tabular}
 \end{center}
-
 \end{frame}
+
 
 \section{Bibliographie}
 \begin{frame}
 \frametitle{Table des matières}
 \tableofcontents[currentsection]
 \end{frame}
+
 
 \begin{frame}
 \frametitle{Bibliographie}
@@ -323,5 +346,6 @@ fonction creer_treillis (G T) =
     \item Mario Hampejs, Nicki Holighaus, László Tóth, Christoph Wiesmeyr ; Representing and counting the subgroups of the group Zm × Zn ; 2012
 \end{itemize}
 \end{frame}
+
 
 \end{document}
