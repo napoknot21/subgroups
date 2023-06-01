@@ -1,7 +1,7 @@
 \documentclass{beamer}
 \usetheme{Frankfurt}
-\usepackage{listings} % pour inclure du code
-\usepackage{graphicx} % pour insérer des images
+\usepackage{listings}
+\usepackage{graphicx}
 \usepackage{minted}
 \usepackage{amsmath, amsthm}
 
@@ -11,11 +11,6 @@
 \newtheorem{prp}{Proposition}
 \newtheorem{df}{Définition}
 \newtheorem{crll}{Corollaire}
-
-\usemintedstyle{monokai}
-\setminted{bgcolor=black, frame=lines, fontsize=\footnotesize, linenos}
-
-\begin{document}
 
 \title{
     Sous groupes de Z/nZxZ/nZ
@@ -27,25 +22,9 @@
 }
 \date{2 juin 2023}
 
+\begin{document}
 
 \tableofcontents
-
-
-\section{Introduction}
-\begin{frame}
-\frametitle{Introduction}
-\tableofcontents[currentsection]
-\end{frame}
-
-
-\begin{frame}
-\frametitle{Introduction}
-\begin{itemize}
-    \item Ce projet aborde l'analyse des sous-groupes du groupe Z/nZ × Z/nZ, un sujet complexe par rapport à l'étude des sous-groupes d'un groupe cyclique.
-    \item Théoriquement, nous utiliserons les vecteurs colonnes des matrices à coefficients entiers et les formes normales de Hermite pour générer et caractériser ces sous-groupes, et introduirons une formule pour les compter.
-    \item Pratiquement, nous développerons un outil OCaml pour générer ces sous-groupes et leur treillis, en se basant sur un entier en paramètre.
-\end{itemize}
-\end{frame}
 
 
 \section{Quelques simplifications du problème}
@@ -58,9 +37,6 @@
 \subsection{Décomposition de n en éléments irréductibles}
 \begin{frame}
     \frametitle{Décomposition de n en éléments irréductibles}
-    \begin{itemize}
-        \item Nous allons simplifier le problème aux cas où $n$ = $p ^ {m}$ avec $p$ un nombre premier et $m \in \mathbb{N}$.
-    \end{itemize}
     \begin{prp}
         Soit $n = \prod\limits_{i = 1}^k p_i^{\alpha_i}$ avec $p_i$ des nombres premiers distincts. Alors,
     
@@ -74,21 +50,18 @@
 
 
 \begin{frame}[fragile]
-    \begin{itemize}
-        \item Nous avons priviligé l'utilisation de $\rho-Pollard$ pour décomposer un entier en facteurs irréductibles
-    \end{itemize}
     \frametitle{Décomposition de n en éléments irréductibles}
     \begin{minted}{OCaml}
-    fonction rho_pollard P n x y k i d
-        Si d <> 1:
-            Retourne d
-        Sinon :
-            x = P ( x ) mod n
-            d = pgcd (| y - x | , n )
-            Si i = k :
-                Retourne rho_pollard loop P n x x 2 k (i+1) d
-            Sinon 
-                Retourne rho_pollard P n x y k (i+1) d
+fonction rho_pollard P n x y k i d
+    Si d <> 1:
+        Retourne d
+    Sinon :
+        x = P ( x ) mod n
+        d = pgcd (| y - x | , n )
+        Si i = k :
+            Retourne rho_pollard P n x x 2k (i+1) d
+        Sinon 
+            Retourne rho_pollard P n x y k (i+1) d
     \end{minted}
 \end{frame}
 
@@ -99,7 +72,7 @@
     \center $\mathbb{Z}^2/n\mathbb{Z} \times n\mathbb{Z} \cong  \mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/n\mathbb{Z}$
 \end{prp}
 \begin{rmk}<2->
-    le problème se résout à trouver les sous-groupes \mathbb{G} de \mathbb{Z²} tels que
+    Le problème se résout à trouver les sous-groupes $\mathbb{G}$ de $\mathbb{Z}$^2 tels que
     \begin{align*}
         H = \begin{pmatrix}
             a & c \\
@@ -134,14 +107,8 @@
 \subsection{Matrices à coefficients entier}
 \begin{frame}
 \frametitle{Matrices à coefficients entier}
-\begin{itemize}
-\item La caractérisation des sous-groupes de $\mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/n\mathbb{Z} $ avec une matrice $H$   = \begin{pmatrix}
-    a & c \\
-    b & d
-    \end{pmatrix}
-    a été explorée, mais leur non-unicité nous amène à utiliser les formes normales d'Hermite, soutenues par une proposition clé sur les matrices à coefficients entiers.
-\end{itemize}
-\begin{prp}<2->
+
+\begin{prp}
     Soient $A$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ et $Q$ \in $\mathbb{GL}_{n}(\mathbb{Z})$ alors
     \begin{align*}
         \mathrm{Im}(AQ) = \mathrm{Im}(A)
@@ -153,10 +120,7 @@
 \subsection{Formes normales de Hermite}
 \begin{frame}
 \frametitle{Formes normales de Hermite}
-\begin{itemize}
-\item Nous allons désormais énoncer la définition de la forme normale de Hermite
-\end{itemize}
-\begin{df}<2->
+\begin{df}
     Soit $A$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ alors, il existe une unique matrice échelonnée réduite suivant les colonnes $H$ \in $\mathbb{M}_{m,n}(\mathbb{Z})$ telle qu'il existe $Q$ \in  $\mathbb{GL}_{n}(\mathbb{Z})$ avec $H$ = $AQ$. La matrice $H$ s'appelle la forme normale de Hermite de $A$.
 \end{df}
 \end{frame}
@@ -198,7 +162,7 @@
 
 \begin{frame}
 \begin{crll}
-    Soit la suite $\suit{A}{k}{0 \le k \le n}$ telle que
+    Soit la suite $(A_k)_{0 \leq k \leq n}$ telle que
     \begin{align*}
         A_0 = \{(a, b) \mid a + b \leq m \} \\
         A_k = \{(a, b) \mid a \leq m, b \leq m, a + b = m + k \}  
@@ -215,8 +179,8 @@ génèrent les sous-groupes $\mathbb{Z²}/p^m\mathbb{Z} \times p^m\mathbb{Z}$ es
                 p^a & 0 \\
                 jp^k & p^b 
             \end{pmatrix}
-            \mid (a, b ) \in $A_k$, 0 \leq j \leq p^{(b-k)}
-                \}
+            \mid (a, b) \in $A_k$, 0 \leq j \leq p^{(b-k)}
+        \}
     \end{align*}
 \end{crll}
 \end{frame}
@@ -225,14 +189,18 @@ génèrent les sous-groupes $\mathbb{Z²}/p^m\mathbb{Z} \times p^m\mathbb{Z}$ es
 \subsection{Énumération des sous-groupes}
 \begin{frame}
 \frametitle{Énumération des sous-groupes}
-\begin{thm}<1->
+\begin{thm}
     Soit $\psi: \mathbb{N}^2 \rightarrow \mathbb{N}$ définie par
     \begin{align*}
     \psi(p, n) = \sum_{i=0}^{n} (n - i)p^i + \sum_{i=0}^{n} \frac{1 - p^{n-i+1}}{1 - p}
     \end{align*}
     Alors, le nombre de sous groupe de $\mathbb{Z}/p^m\mathbb{Z} \times \mathbb{Z}/p^m\mathbb{Z}$ est $\psi(p,m)$
-\end{thm}
-\begin{prp}<2->
+\end{thm}    
+\end{frame}
+
+
+\begin{frame}
+\begin{prp}
     Soit n = \prod\limits_{i = 1}^k p_i^{\alpha_i} avec $p_i$ des nombres premiers distincts. Le nombre total de sous-groupes de $\mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/n\mathbb{Z}$ est
     \begin{align*}
     \prod_{i = 1}^{k} \psi(p_i,\alpha_i)
@@ -250,19 +218,15 @@ génèrent les sous-groupes $\mathbb{Z²}/p^m\mathbb{Z} \times p^m\mathbb{Z}$ es
 \end{frame}
 
 \begin{frame}[fragile]
-\begin{itemize}
-    \item Notre algorithme prend en paramètres l’ensemble des sous-groupes G ainsi que leur table
-de relation T
-\end{itemize}
 \frametitle{Génération du treillis}
 \begin{minted}{OCaml}
 fonction creer_treillis (G T) =
-    G ← Trier G par la cardinalit é
-    L = ∅
-    Pour chaque u ∈ G:
-        Pour chaque v ∈ T[u]:
-            Si non (u, v0) ∈ L tel que v0 ⊂ v
-                Alors L ∪ { (u, v) }
+    G <- Trier G par la cardinalité
+    L = Vide
+    Pour chaque u dans G:
+        Pour chaque v dans T[u]:
+            Si not-exists (u, v0) dans L tel que v0  v
+                Alors L UNION {(u, v)}
     Retourner (G, L)
 \end{minted}
 \end{frame}
@@ -284,32 +248,6 @@ fonction creer_treillis (G T) =
 \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{Z2ZxZ2Z.png}
-\end{figure}
-\end{frame}
-
-
-\subsection{Pour n = 4}
-\begin{frame}
-\frametitle{Pour n = 4}
-\begin{itemize}
-    \item Nombre de sous-groupe de Z/4Z × Z/4Z : 15
-\end{itemize}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{Z4ZxZ4Z.png}
-\end{figure}
-\end{frame}
-
-
-\subsection{Pour n = 8}
-\begin{frame}
-\frametitle{Pour n = 8}
-\begin{itemize}
-    \item Nombre de sous-groupe de Z/8Z × Z/8Z : 37
-\end{itemize}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.9\textwidth]{Z8ZxZ8Z.png}
 \end{figure}
 \end{frame}
 
