@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usetheme{Frankfurt}
+\usetheme{Madrid}
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{minted}
@@ -16,8 +16,8 @@
     Sous groupes de Z/nZxZ/nZ
 }
 \subtitle{Projet Mathématiques-Informatique}
-\institute{Université Paris Cité}
-\author[Kevin, Charly]{
+\institute[U. Paris Cité]{Université Paris Cité}
+\author[Kevin G., Charly M.A.]{
     Kevin Garnier \\    Charly Martin-Avila
 }
 \date{2 juin 2023}
@@ -164,7 +164,9 @@ fonction rho_pollard P n x y k i d
 \begin{crll}
     Soit la suite $(A_k)_{0 \leq k \leq n}$ telle que
     \begin{align*}
-        A_0 = \{(a, b) \mid a + b \leq m \} \\
+        A_0 = \{(a, b) \mid a + b \leq m \}
+    \end{align*}
+    \begin{align*}
         A_k = \{(a, b) \mid a \leq m, b \leq m, a + b = m + k \}  
     \end{align*}
     Alors, l’ensemble des matrices du théorème, c’est-à-dire, les matrices dont les colonnes
@@ -226,7 +228,7 @@ fonction creer_treillis (G T) =
     Pour chaque u dans G:
         Pour chaque v dans T[u]:
             Si not-exists (u, v0) dans L tel que v0  v
-                Alors L UNION {(u, v)}
+                Alors L $\cup$ {(u, v)}
     Retourner (G, L)
 \end{minted}
 \end{frame}
